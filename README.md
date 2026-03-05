@@ -33,17 +33,26 @@ In development:
 - User wallet/profile integration
 - Content upload and hosting
 - Community moderation tools
-Vision
-  Traditional platforms extract value from creators. They monetize your audience, sell your data, and control your reach.
-Nowos is infrastructure, not extraction. Buy a card coordinate once - it's yours. Build your community, issue your tokens, monetize directly. The platform facilitates, then gets out of the way.
+
+###Vision
+ 
+ Traditional platforms extract value from creators. They monetize your audience, sell your data, and control your reach.
+  
+Nowos is infrastructure, not extraction. Buy 
+a card coordinate once - it's yours. Build your community, issue your tokens, monetize directly. 
+ 
+ The platform facilitates, then gets out of the way.
+
 No premium tiers. No algorithmic gatekeeping. No corporate middlemen.
 
-What Makes This Different
-  Customizable by design: Nowos is a sandbox. Cards can be promo duels, collaborative "Nowos Totems", storefronts, forums, galleries, games, streams, job boards, Free press, one stop shop  - whatever you want. Template library provided, but you're not locked in.
+## What Makes This Different
+  Customizable by design: Nowos is a sandbox. Cards can be anything from promo duels, collaborative "Nowos Totems", storefronts, forums, galleries, games, streams, job boards, Free press, one stop shop, and beyond. Built to  blow up.
+ 
+  Template library provided, but you're not locked in.
 
   Decentralized ownership: Content lives on IPFS or user-hosted storage. The mesh network connects it. You're not renting space - you own coordinates.
 
-  Token economy without speculation: Creator tokens function as community currency. Fans support creators directly. Tokens can buy cards, tip creators, purchase services - all within the platform. Not designed for external trading.
+  Token economy without speculation: Creator tokens function as community currency. Fans support creators directly. Tokens can buy cards, tip creators, purchase services - all within the platform. **(probably) Not designed for external trading.**
 
   AI agents as participants: (Future) Autonomous AI agent inhabitants with their own wallets and content. They collaborate, create, and trade alongside humans.
   
@@ -70,27 +79,35 @@ This is not an exhaustive list. It's a sandbox - you define the use case.
 - Interoperability: Cross-chain token bridges (import existing crypto)
 
 ##Economic Model
-- Card pricing:
-First card: FREE
-Additional cards: Incremental pricing ($1, $2, $3... capping at $10)
-- Early adopters: Bonus incentives (details TBD)
-- Prime coordinates: Market-driven pricing
-- Revenue:
+
+Card pricing:
+
+- First card: $1
+
+- Additional cards: Incremental pricing ($1, $2, $3... capping at $10)
+
+- Early adopters: BOGO Bonus incentives (details TBD)
+
+- Prime coordinates: Market-driven pricing. 
+
+Revenue:
+
 -- One-time card sales
+
 -- Optional collectible, unlockable, tradeable features (verification badges, analytics)
 
-Enterprise/brand licensing for custom hubs
+**Enterprise/brand licensing for custom hubs**
 
 Philosophy: Minimal extraction. The platform should be self-sustaining, not profit-maximizing.
 
-License
+#License
 Code: MIT License - fork, modify, use freely for non-commercial purposes.
 Nowos brand and commercial platform: All rights reserved. You may build on the code, but commercial deployment using the Nowos name/brand requires permission.
 
 
 If you want to collaborate or commercialize, reach out.
-Contributing
-Collaboration welcome. If you have expertise in:
+Contributing Collaboration welcome. 
+If you have expertise in:
 - Blockchain development
 - Mesh networking / IPFS
 - Decentralized systems architecture
