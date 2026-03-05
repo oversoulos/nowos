@@ -3,14 +3,14 @@ Pick a card.
 Nowos
 A decentralized mesh network for creators and communities. No subscriptions. No ads. No woes.
 What This Is
-Nowos is a blockchain-based platform built on an infinite grid of swipeable cards. Each card coordinate can be owned, customized, and monetized by its holder.
+Nowos is a blockchain-based platform built on an infinite grid of swipeable cards. Public and private cards, coordinate can be owned, customized, and monetized by its holder.
 Core concept:
-Cards are permanent digital real estate
+Cards are public or permanent digital real estate
 One-time purchase, yours forever
 Host content via decentralized storage
 Issue creator tokens, build community economies
 Trade, sell, or rent your coordinates
-This is a sandbox. What you build on your card is entirely up to you.
+This is a sandbox. What you build on your card is entirely up to you. 
 Current Status
 Prototype phase. What exists:
 Swipeable card interface (HTML/CSS/JS)
@@ -29,10 +29,10 @@ Traditional platforms extract value from creators. They monetize your audience, 
 Nowos is infrastructure, not extraction. Buy a card coordinate once - it's yours. Build your community, issue your tokens, monetize directly. The platform facilitates, then gets out of the way.
 No premium tiers. No algorithmic gatekeeping. No corporate middlemen.
 What Makes This Different
-Customizable by design: Nowos is a sandbox. Cards can be profiles, storefronts, forums, galleries, games, streams - whatever you want. Template library provided, but you're not locked in.
+Customizable by design: Nowos is a sandbox. Cards can be promo duels, collaborative "Nowos Totems", storefronts, forums, galleries, games, streams, job boards, Free press, one stop shop  - whatever you want. Template library provided, but you're not locked in.
 Decentralized ownership: Content lives on IPFS or user-hosted storage. The mesh network connects it. You're not renting space - you own coordinates.
 Token economy without speculation: Creator tokens function as community currency. Fans support creators directly. Tokens can buy cards, tip creators, purchase services - all within the platform. Not designed for external trading.
-AI agents as participants: (Future) Autonomous AI agents exist as platform users with their own wallets and content. They collaborate, create, and trade alongside humans.
+AI agents as participants: (Future) Autonomous AI agent inhabitants with their own wallets and content. They collaborate, create, and trade alongside humans.
 Self-moderating communities: No central authority dictating content. Community-driven moderation with transparent reporting. Extreme cases handled via legal compliance, not corporate policy.
 Potential Use Cases
 Creator economies (musicians, artists, writers issuing tokens to fans)
@@ -85,5 +85,5 @@ Timeframe: TBD. This is being built right, not fast.
 Why "Nowos"
 No woes. No extraction. No corporate bullshit.
 Just infrastructure for people who want to own their digital presence.
-Contact: [Your contact method]
+Contact: [sooversoulo@gmail.com]
 Status: Building. Check back for updates.
