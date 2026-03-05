@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Nowos - Prototype</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            background: #000;
+        }
+
+        /* ANIMATED BACKGROUND */
+        #background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background: 
+                radial-gradient(ellipse at 20% 30%, rgba(102, 126, 234, 0.3) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(118, 75, 162, 0.3) 0%, transparent 50%),
+                linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 50%, #0a0a1a 100%);
+            background-size: 200% 200%;
+            transition: background-position 0.3s ease;
+        }
+
+        /* CARD CONTAINER */
+        #card-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+        }
+
+        .card {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            max-width: 500px;
+            max-height: 88vh;
+            background: rgba(20, 20, 30, 0.7);
+            border-radius: 20px;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.8),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                0 0 30px rgba(102, 126, 234, 0.2);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            backdrop-filter: blur(20px);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(
+                to bottom,
+                rgba(255, 255, 255, 0.08) 0%,
+                transparent 100%
+            );
+            border-radius: 20px 20px 0 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            background: rgba(30, 30, 45, 0.8);
+            backdrop-filter: blur(20px);
+        }
+
+        .card-coord {
+            font-size: 64px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .card-label {
+            font-size: 14px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        /* CARD BACK - UPLOAD INTERFACE */
+        .upload-section {
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .upload-section h3 {
+            color: #667eea;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .upload-zone {
+            border: 2px dashed rgba(102, 126, 234, 0.5);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .upload-zone:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .upload-zone input {
+            display: none;
+        }
+
+        .template-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .template-btn {
+            padding: 12px;
+            background: rgba(102, 126, 234, 0.2);
+            border: 1px solid rgba(102, 126, 234, 0.4);
+            border-radius: 8px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+
+        .template-btn:hover {
+            background: rgba(102, 126, 234, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* DRAGGABLE ELEMENTS */
+        .draggable {
+            position: fixed;
+            cursor: move;
+            z-index: 1000;
+            user-select: none;
+        }
+
+        /* PROFILE POG */
+        #profile-pog {
+            top: 20px;
+            left: 20px;
+            width: 70px;
+            height: 70px;
+        }
+
+        .pog {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            transition: all 0.3s;
+            transform-style: preserve-3d;
+        }
+
+        .pog:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 32px rgba(102, 126, 234, 0.6);
+        }
+
+        .pog.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .pog-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pog-back {
+            transform: rotateY(180deg);
+            background: rgba(20, 20, 30, 0.95);
+            border: 3px solid rgba(102, 126, 234, 0.5);
+            backdrop-filter: blur(10px);
+            padding: 10px;
+            font-size: 10px;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        /* LEVEL BAR */
+        .level-bar {
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 6px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 3px;
+            overflow: hidden;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .level-fill {
+            height: 100%;
+            width: 65%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s;
+        }
+
+        /* FLIP BUTTON */
+        #flip-button {
+            bottom: 30px;
+            right: 30px;
+        }
+
+        .control-btn {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: rgba(20, 20, 30, 0.8);
+            border: 2px solid rgba(102, 126, 234, 0.5);
+            backdrop-filter: blur(15px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+        }
+
+        .control-btn:hover {
+            background: rgba(102, 126, 234, 0.4);
+            transform: scale(1.1);
+            box-shadow: 0 12px 32px rgba(102, 126, 234, 0.6);
+        }
+
+        /* SETTINGS BUTTON */
+        #settings-button {
+            top: 20px;
+            right: 20px;
+        }
+
+        /* SETTINGS PANEL */
+        #settings-panel {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            width: 90%;
+            max-width: 400px;
+            max-height: 80vh;
+            background: rgba(20, 20, 30, 0.95);
+            border: 2px solid rgba(102, 126, 234, 0.5);
+            border-radius: 16px;
+            padding: 30px;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s;
+            backdrop-filter: blur(20px);
+            overflow-y: auto;
+        }
+
+        #settings-panel.active {
+            opacity: 1;
+            pointer-events: all;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        #settings-panel h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .setting-item {
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            color: #aaa;
+        }
+
+        .close-settings {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 30px;
+            height: 30px;
+            background: rgba(255, 0, 0, 0.3);
+            border: 1px solid rgba(255, 0, 0, 0.5);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+        }
+
+        /* POSITION INDICATOR */
+        #position {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 12px;
+            z-index: 50;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="background"></div>
+
+    <div id="card-container">
+        <div class="card" id="card">
+            <div class="card-face card-front">
+                <div class="card-coord" id="coord">0, 0</div>
+                <div class="card-label">NOWOS PROTOTYPE</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="upload-section">
+                    <h3>📤 Upload Content</h3>
+                    <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
+                        <input type="file" id="fileInput" multiple accept="*/*">
+                        <div>Drag & drop or click to upload</div>
+                        <small style="color: #666;">Images, videos, any file type</small>
+                    </div>
+                </div>
+
+                <div class="upload-section">
+                    <h3>🎨 Choose Template</h3>
+                    <div class="template-selector">
+                        <div class="template-btn">📱 Profile</div>
+                        <div class="template-btn">🎥 Video</div>
+                        <div class="template-btn">🖼️ Gallery</div>
+                        <div class="template-btn">📝 Blog</div>
+                        <div class="template-btn">💬 Chat</div>
+                        <div class="template-btn">🔥 Hot/Not</div>
+                    </div>
+                </div>
+
+                <div class="upload-section">
+                    <h3>💾 Save to localStorage</h3>
+                    <small style="color: #666;">IPFS integration coming later</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Pog -->
+    <div class="draggable" id="profile-pog">
+        <div class="pog" id="pog">
+            <div class="pog-face pog-front">👤</div>
+            <div class="pog-face pog-back">
+                <div style="font-size: 9px; text-align: center;">
+                    WALLET<br>
+                    💰 1,234<br>
+                    🔒 Encrypted
+                </div>
+            </div>
+        </div>
+        <div class="level-bar">
+            <div class="level-fill"></div>
+        </div>
+    </div>
+
+    <!-- Flip Button -->
+    <div class="draggable" id="flip-button">
+        <div class="control-btn">🔄</div>
+    </div>
+
+    <!-- Settings Button -->
+    <div class="draggable" id="settings-button">
+        <div class="control-btn">⚙️</div>
+    </div>
+
+    <!-- Settings Panel -->
+    <div id="settings-panel">
+        <div class="close-settings">✕</div>
+        <h2>⚙️ Settings</h2>
+        <div class="setting-item">🎨 Background (placeholder)</div>
+        <div class="setting-item">🎭 Skins (placeholder)</div>
+        <div class="setting-item">🔓 Unlockables (placeholder)</div>
+        <div class="setting-item">🌙 Anonymous Mode (placeholder)</div>
+        <div class="setting-item">📊 Level System (placeholder)</div>
+    </div>
+
+    <div id="position">X: 0 | Y: 0</div>
+
+    <script>
+        let x = 0, y = 0;
+        let touchStartX = 0, touchStartY = 0;
+        const card = document.getElementById('card');
+        const background = document.getElementById('background');
+        const posDisplay = document.getElementById('position');
+
+        // Swipe navigation
+        document.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+        });
+
+        document.addEventListener('touchend', e => {
+            const deltaX = e.changedTouches[0].screenX - touchStartX;
+            const deltaY = e.changedTouches[0].screenY - touchStartY;
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+                navigate(deltaX > 0 ? -1 : 1, 0);
+            } else if (Math.abs(deltaY) > 50) {
+                navigate(0, deltaY > 0 ? -1 : 1);
+            }
+        });
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'ArrowLeft') navigate(-1, 0);
+            if (e.key === 'ArrowRight') navigate(1, 0);
+            if (e.key === 'ArrowUp') navigate(0, -1);
+            if (e.key === 'ArrowDown') navigate(0, 1);
+        });
+
+        function navigate(dx, dy) {
+            x += dx;
+            y += dy;
+            posDisplay.textContent = `X: ${x} | Y: ${y}`;
+            document.getElementById('coord').textContent = `${x}, ${y}`;
+            
+            // Animate background
+            background.style.backgroundPosition = `${x * 10}% ${y * 10}%`;
+            
+            // Card pulse
+            card.style.transform = 'scale(0.96)';
+            setTimeout(() => card.style.transform = 'scale(1)', 100);
+        }
+
+        // Flip card button
+        document.getElementById('flip-button').addEventListener('click', () => {
+            card.classList.toggle('flipped');
+        });
+
+        // Profile pog flip
+        document.getElementById('profile-pog').addEventListener('click', () => {
+            document.getElementById('pog').classList.toggle('flipped');
+        });
+
+        // Settings
+        document.getElementById('settings-button').addEventListener('click', () => {
+            document.getElementById('settings-panel').classList.add('active');
+        });
+
+        document.querySelector('.close-settings').addEventListener('click', () => {
+            document.getElementById('settings-panel').classList.remove('active');
+        });
+
+        // Make elements draggable
+        document.querySelectorAll('.draggable').forEach(el => {
+            let isDragging = false;
+            let startX, startY, initialX, initialY;
+
+            el.addEventListener('mousedown', start);
+            el.addEventListener('touchstart', start);
+
+            function start(e) {
+                if (e.target.closest('.control-btn') || e.target.closest('.pog')) {
+                    isDragging = true;
+                    const touch = e.touches ? e.touches[0] : e;
+                    startX = touch.clientX - el.offsetLeft;
+                    startY = touch.clientY - el.offsetTop;
+                    el.style.cursor = 'grabbing';
+                }
+            }
+
+            document.addEventListener('mousemove', move);
+            document.addEventListener('touchmove', move);
+
+            function move(e) {
+                if (!isDragging) return;
+                e.preventDefault();
+                const touch = e.touches ? e.touches[0] : e;
+                el.style.left = (touch.clientX - startX) + 'px';
+                el.style.top = (touch.clientY - startY) + 'px';
+            }
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+                el.style.cursor = 'move';
+            });
+            document.addEventListener('touchend', () => {
+                isDragging = false;
+                el.style.cursor = 'move';
+            });
+        });
+    </script>
+</body>
+  </html>
