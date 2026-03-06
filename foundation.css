@@ -1,0 +1,48 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    background: #000;
+}
+
+/* Background layers */
+.bg-layer {
+    position: fixed;
+    top: -25%;
+    left: -25%;
+    width: 150%;
+    height: 150%;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bg-far {
+    z-index: 1;
+    background: linear-gradient(135deg, #0a0820 0%, #1a1535 50%, #2a3550 100%);
+    filter: blur(8px);
+    animation: drift 40s infinite alternate ease-in-out;
+}
+
+.bg-mid {
+    z-index: 2;
+    background: radial-gradient(circle at 30% 40%, rgba(100, 200, 220, 0.1) 0%, transparent 50%);
+    filter: blur(4px);
+}
+
+.bg-near {
+    z-index: 3;
+    opacity: 0.3;
+    filter: blur(1px);
+}
+
+/* Background drift animation */
+@keyframes drift {
+    0% { transform: translate(0, 0) scale(1.05); }
+    100% { transform: translate(-3%, 3%) scale(1.08); }
+}
