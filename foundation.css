@@ -83,8 +83,8 @@
 
         /* Focused state (auto-zoom) */
         .card.focused {
-            width: 450px;
-            height: 630px;
+            width: 340px;
+            height: 480px;
         }
 
         /* Flipped state */
