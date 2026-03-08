@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="foundation.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="foundation.css">
     <title>Nowos</title>
 </head>
 <body>
-
-<div class="world">
 
     <canvas id="star-canvas"></canvas>
 
@@ -22,14 +20,7 @@
 
     <div id="card-container">
         <div id="zoom-wrap" class="zoomed">
-
             <div class="card" id="card">
-
-                <!-- REQUIRED: 3D slab edges -->
-                <div class="edge edge-left"></div>
-                <div class="edge edge-right"></div>
-                <div class="edge edge-top"></div>
-                <div class="edge edge-bottom"></div>
 
                 <div class="card-face card-front">
                     <div class="card-skin"></div>
@@ -51,17 +42,16 @@
                 </div>
 
             </div>
-
         </div>
     </div>
 
-    <div class="socket" id="s-profile">
-        <div class="socket-icon">◉</div>
-        <div class="socket-lbl">Profile</div>
-    </div>
+    <div class="socket" id="s-profile"><div class="socket-icon">◉</div><div class="socket-lbl">Profile</div></div>
+    <div class="socket" id="s-settings"><div class="socket-icon">⚙</div><div class="socket-lbl">Settings</div></div>
+    <div class="socket" id="s-tools"><div class="socket-icon">⬡</div><div class="socket-lbl">Tools</div></div>
+    <div class="socket" id="s-flip"><div class="socket-icon">↺</div><div class="socket-lbl">Flip</div></div>
 
-</div>
+    <div id="hud">POS <b id="hud-pos">0, 0</b></div>
 
-<script src="foundation.js"></script>
+    <script src="foundation.js"></script>
 </body>
 </html>
