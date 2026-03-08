@@ -3,80 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nowos - Complete Foundation</title>
-
-
+    <title>Nowos Foundation</title>
 </head>
+
+
 <body>
-    <!-- BACKGROUND LAYERS -->
+    <!-- ========================================
+         BACKGROUND LAYERS
+         ======================================== -->
     <div class="bg-layer bg-far" id="bg-far"></div>
     <div class="bg-layer bg-mid" id="bg-mid"></div>
     <div class="bg-layer bg-near" id="bg-near"></div>
 
-    <!-- CARD -->
+    <!-- ========================================
+         CARD SYSTEM
+         ======================================== -->
     <div id="card-container">
         <div class="card" id="card">
-            <!-- FRONT -->
             <div class="card-face card-front">
                 <div class="card-content">
                     <div class="coord" id="coord">0, 0</div>
                     <div class="label">NOWOS</div>
                 </div>
             </div>
-            
-            <!-- BACK -->
             <div class="card-face card-back">
                 <div class="card-content">
                     <div class="coord">EDIT</div>
-                    <div class="label">BACK</div>
+                    <div class="label">CARD BACK</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- FLIP BUTTON -->
-    <div id="flip-btn">🔄</div>
-
-    <!-- INFO DISPLAY -->
-    <div id="info">
-        <div>Position: <span id="pos">0, 0</span></div>
-        <div>Size: <span id="size">Small</span></div>
-        <div>Arrow keys or swipe to navigate</div>
-        <div>Space/🔄 to flip</div>
+    <!-- ========================================
+         SOCKET SYSTEM
+         Empty containers for plug-in components
+         ======================================== -->
+    <div id="socket-profile" class="socket">
+        <div class="socket-label">PROFILE</div>
     </div>
 
+    <div id="socket-settings" class="socket">
+        <div class="socket-label">SETTINGS</div>
+    </div>
+
+    <div id="socket-tools" class="socket">
+        <div class="socket-label">TOOLS</div>
+    </div>
+
+    <div id="socket-flip" class="socket">
+        <div class="socket-label">FLIP</div>
+    </div>
+
+    <!-- ========================================
+         INFO PANEL
+         ======================================== -->
+    <div id="info">
+        <div>Position: <span id="pos">0, 0</span> | Size: <span id="size">Small</span></div>
+        <div>Arrow keys / Swipe to navigate | Space to flip</div>
+    </div>
+
+    <!-- ========================================
+         FOUNDATION JAVASCRIPT
+         Core navigation + socket system
+         ======================================== -->
     <script>
-        // State
+        /* ========================================
+           STATE MANAGEMENT
+           ======================================== */
         let x = 0, y = 0;
         let isNavigating = false;
         let idleTimer = null;
         let touchStartX = 0, touchStartY = 0;
 
-        // Elements
+        /* Elements */
         const card = document.getElementById('card');
         const coord = document.getElementById('coord');
-        const flipBtn = document.getElementById('flip-btn');
         const bgFar = document.getElementById('bg-far');
         const bgMid = document.getElementById('bg-mid');
         const bgNear = document.getElementById('bg-near');
         const posDisplay = document.getElementById('pos');
         const sizeDisplay = document.getElementById('size');
 
-        // Auto-focus after idle
-        function startIdleTimer() {
-            clearTimeout(idleTimer);
-            card.classList.remove('focused');
-            sizeDisplay.textContent = 'Small';
-            
-            idleTimer = setTimeout(() => {
-                if (!isNavigating && !card.classList.contains('flipped')) {
-                    card.classList.add('focused');
-                    sizeDisplay.textContent = 'Focused';
-                }
-            }, 15000); // 15 seconds
-        }
+        /* ========================================
+           CARD NAVIGATION SYSTEM
+           ======================================== */
 
-        // Navigate to new card
         function navigate(dx, dy) {
             if (isNavigating || card.classList.contains('flipped')) return;
             
@@ -84,43 +96,28 @@
             x += dx;
             y += dy;
             
-            // Determine slide direction
+            /* Determine slide direction */
             let slideOut, slideIn;
-            if (dx > 0) {
-                slideOut = 'slide-out-left';
-                slideIn = 'slide-in-right';
-            } else if (dx < 0) {
-                slideOut = 'slide-out-right';
-                slideIn = 'slide-in-left';
-            } else if (dy > 0) {
-                slideOut = 'slide-out-down';
-                slideIn = 'slide-in-up';
-            } else {
-                slideOut = 'slide-out-up';
-                slideIn = 'slide-in-down';
-            }
+            if (dx > 0) { slideOut = 'slide-out-left'; slideIn = 'slide-in-right'; }
+            else if (dx < 0) { slideOut = 'slide-out-right'; slideIn = 'slide-in-left'; }
+            else if (dy > 0) { slideOut = 'slide-out-down'; slideIn = 'slide-in-up'; }
+            else { slideOut = 'slide-out-up'; slideIn = 'slide-in-down'; }
             
-            // Parallax background
-            const farX = x * 8;
-            const farY = y * 8;
-            const midX = x * 16;
-            const midY = y * 16;
-            const nearX = x * 24;
-            const nearY = y * 24;
+            /* Multi-layer parallax */
+            const farX = x * 8, farY = y * 8;
+            const midX = x * 16, midY = y * 16;
+            const nearX = x * 24, nearY = y * 24;
             
             bgFar.style.transform = `translate(${-farX}px, ${-farY}px) scale(1.05)`;
             bgMid.style.transform = `translate(${-midX}px, ${-midY}px)`;
             bgNear.style.transform = `translate(${-nearX}px, ${-nearY}px)`;
             
-            // Slide out current card
+            /* Card transition */
             card.classList.add(slideOut);
             
             setTimeout(() => {
-                // Update content
                 coord.textContent = `${x}, ${y}`;
                 posDisplay.textContent = `${x}, ${y}`;
-                
-                // Remove slide-out, add slide-in
                 card.classList.remove(slideOut);
                 card.classList.add(slideIn);
                 
@@ -132,31 +129,45 @@
             }, 400);
         }
 
-        // Flip card
+        /* Card flip */
         function flipCard() {
             card.classList.toggle('flipped');
             if (card.classList.contains('flipped')) {
-                card.classList.add('focused');
-                sizeDisplay.textContent = 'Focused (Flipped)';
                 clearTimeout(idleTimer);
             } else {
                 startIdleTimer();
             }
         }
 
-        // Keyboard navigation
+        /* Auto-focus timer (optional - comment out to disable) */
+        function startIdleTimer() {
+            clearTimeout(idleTimer);
+            card.classList.remove('focused');
+            sizeDisplay.textContent = 'Small';
+            
+            /* Uncomment to enable auto-zoom after 15 seconds */
+            // idleTimer = setTimeout(() => {
+            //     if (!isNavigating && !card.classList.contains('flipped')) {
+            //         card.classList.add('focused');
+            //         sizeDisplay.textContent = 'Focused';
+            //     }
+            // }, 15000);
+        }
+
+        /* ========================================
+           INPUT HANDLING
+           ======================================== */
+
+        /* Keyboard */
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowLeft') navigate(-1, 0);
             if (e.key === 'ArrowRight') navigate(1, 0);
             if (e.key === 'ArrowUp') navigate(0, -1);
             if (e.key === 'ArrowDown') navigate(0, 1);
-            if (e.key === ' ') {
-                e.preventDefault();
-                flipCard();
-            }
+            if (e.key === ' ') { e.preventDefault(); flipCard(); }
         });
 
-        // Touch navigation
+        /* Touch */
         document.addEventListener('touchstart', (e) => {
             touchStartX = e.changedTouches[0].screenX;
             touchStartY = e.changedTouches[0].screenY;
@@ -174,10 +185,71 @@
             }
         });
 
-        // Flip button
-        flipBtn.addEventListener('click', flipCard);
+        /* ========================================
+           SOCKET DRAGGING SYSTEM
+           ======================================== */
 
-        // Initialize
+        document.querySelectorAll('.socket').forEach(socket => {
+            let isDragging = false;
+            let startX, startY;
+
+            socket.addEventListener('mousedown', start);
+            socket.addEventListener('touchstart', start);
+
+            function start(e) {
+                isDragging = true;
+                const touch = e.touches ? e.touches[0] : e;
+                startX = touch.clientX - socket.offsetLeft;
+                startY = touch.clientY - socket.offsetTop;
+                socket.style.cursor = 'grabbing';
+            }
+
+            document.addEventListener('mousemove', move);
+            document.addEventListener('touchmove', move);
+
+            function move(e) {
+                if (!isDragging) return;
+                e.preventDefault();
+                const touch = e.touches ? e.touches[0] : e;
+                socket.style.left = (touch.clientX - startX) + 'px';
+                socket.style.top = (touch.clientY - startY) + 'px';
+            }
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+                socket.style.cursor = 'move';
+            });
+            
+            document.addEventListener('touchend', () => {
+                isDragging = false;
+            });
+        });
+
+        /* ========================================
+           COMPONENT LOADER (for future use)
+           Uncomment when ready to load components
+           ======================================== */
+
+        /*
+        async function loadComponent(name, socketId) {
+            try {
+                const response = await fetch(`components/${name}.html`);
+                const html = await response.text();
+                const socket = document.getElementById(socketId);
+                socket.innerHTML = html;
+                socket.style.border = 'none';
+                socket.style.background = 'transparent';
+            } catch (err) {
+                console.error(`Failed to load ${name}:`, err);
+            }
+        }
+
+        // Example usage:
+        // loadComponent('settings-panel', 'socket-settings');
+        // loadComponent('wallet-pog', 'socket-profile');
+        */
+
+        /* Initialize */
         startIdleTimer();
     </script>
 </body>
