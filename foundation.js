@@ -1,0 +1,16 @@
+// foundation.js
+
+// State Management
+// ...
+
+// Card Navigation
+// ...
+
+// Input Handling
+// ...
+
+// Socket Dragging
+// ...
+
+// Component Loader
+// ...
