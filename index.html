@@ -39,19 +39,19 @@
          SOCKET SYSTEM
          Empty containers for plug-in components
          ======================================== -->
-    <div id="socket-profile" class="socket">
+   // <div id="socket-profile" class="socket">
         <div class="socket-label">PROFILE</div>
     </div>
 
-    <div id="socket-settings" class="socket">
+   // <div id="socket-settings" class="socket">
         <div class="socket-label">SETTINGS</div>
     </div>
 
-    <div id="socket-tools" class="socket">
+   // <div id="socket-tools" class="socket">
         <div class="socket-label">TOOLS</div>
     </div>
 
-    <div id="socket-flip" class="socket">
+   // <div id="socket-flip" class="socket">
         <div class="socket-label">FLIP</div>
     </div>
 
@@ -146,12 +146,12 @@
             sizeDisplay.textContent = 'Small';
             
             /* Uncomment to enable auto-zoom after 15 seconds */
-            // idleTimer = setTimeout(() => {
-            //     if (!isNavigating && !card.classList.contains('flipped')) {
-            //         card.classList.add('focused');
-            //         sizeDisplay.textContent = 'Focused';
-            //     }
-            // }, 15000);
+             idleTimer = setTimeout(() => {
+                 if (!isNavigating && !card.classList.contains('flipped')) {
+                     card.classList.add('focused');
+                     sizeDisplay.textContent = 'Focused';
+                 }
+             }, 15000);
         }
 
         /* ========================================
