@@ -1,4 +1,4 @@
-    
+
         /* ========================================
            FOUNDATION CSS - CORE SYSTEM
            Edit only when changing base structure
@@ -98,8 +98,8 @@
 
         /* Focused state (optional auto-zoom) */
         .card.focused {
-            width: 340px;
-            height: 480px;
+            width: 450px;
+            height: 630px;
         }
 
         /* Flipped state */
