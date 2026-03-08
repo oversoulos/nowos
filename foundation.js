@@ -1,4 +1,4 @@
-/* ================================================
+I'm/* ================================================
        NOWOS JS CORE
 
        ZOOM STATE MACHINE:
@@ -391,8 +391,7 @@
         drawStars(ts);
         requestAnimationFrame(loop);
     }
-    requestAnimationFrame(loop);
-}
+requestAnimationFrame(loop);
     /* ================================================
        SKIN API (call from settings plugin):
 
