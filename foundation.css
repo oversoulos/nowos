@@ -1,3 +1,8 @@
+    <style>
+        /* ========================================
+           FOUNDATION CSS - CORE SYSTEM
+           Edit only when changing base structure
+           ======================================== */
 
         /* RESET */
         * {
@@ -18,7 +23,11 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
 
-        /* BACKGROUND LAYERS */
+        /* ========================================
+           BACKGROUND LAYERS
+           3-layer parallax system
+           ======================================== */
+
         .bg-layer {
             position: fixed;
             top: -25%;
@@ -28,6 +37,7 @@
             will-change: transform;
         }
 
+        /* Far layer - slowest movement */
         .bg-far {
             z-index: 1;
             background: linear-gradient(135deg, #0a0820 0%, #1a1535 50%, #2a3550 100%);
@@ -36,6 +46,7 @@
             transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+        /* Mid layer - medium movement */
         .bg-mid {
             z-index: 2;
             background: radial-gradient(circle at 30% 40%, rgba(100, 200, 220, 0.08) 0%, transparent 50%);
@@ -43,6 +54,7 @@
             transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+        /* Near layer - fastest movement */
         .bg-near {
             z-index: 3;
             background: repeating-linear-gradient(
@@ -62,14 +74,17 @@
             100% { transform: translate(-3%, 3%) scale(1.08); }
         }
 
-        /* CARD CONTAINER */
+        /* ========================================
+           CARD SYSTEM
+           Core navigation element
+           ======================================== */
+
         #card-container {
             position: relative;
             z-index: 100;
             transform-style: preserve-3d;
         }
 
-        /* CARD */
         .card {
             position: relative;
             width: 220px;
@@ -81,10 +96,10 @@
                 height 0.6s ease;
         }
 
-        /* Focused state (auto-zoom) */
+        /* Focused state (optional auto-zoom) */
         .card.focused {
-            width: 340px;
-            height: 480px;
+            width: 450px;
+            height: 630px;
         }
 
         /* Flipped state */
@@ -92,76 +107,33 @@
             transform: rotateY(180deg);
         }
 
-        /* Sliding states */
-        .card.slide-out-left {
-            animation: slideOutLeft 0.4s forwards;
-        }
-        .card.slide-out-right {
-            animation: slideOutRight 0.4s forwards;
-        }
-        .card.slide-out-up {
-            animation: slideOutUp 0.4s forwards;
-        }
-        .card.slide-out-down {
-            animation: slideOutDown 0.4s forwards;
-        }
-
-        .card.slide-in-left {
-            animation: slideInLeft 0.4s forwards;
-        }
-        .card.slide-in-right {
-            animation: slideInRight 0.4s forwards;
-        }
-        .card.slide-in-up {
-            animation: slideInUp 0.4s forwards;
-        }
-        .card.slide-in-down {
-            animation: slideInDown 0.4s forwards;
-        }
-
         /* Slide animations */
-        @keyframes slideOutLeft {
-            to { transform: translateX(-150vw); opacity: 0; }
-        }
-        @keyframes slideOutRight {
-            to { transform: translateX(150vw); opacity: 0; }
-        }
-        @keyframes slideOutUp {
-            to { transform: translateY(-150vh); opacity: 0; }
-        }
-        @keyframes slideOutDown {
-            to { transform: translateY(150vh); opacity: 0; }
-        }
+        .card.slide-out-left { animation: slideOutLeft 0.4s forwards; }
+        .card.slide-out-right { animation: slideOutRight 0.4s forwards; }
+        .card.slide-out-up { animation: slideOutUp 0.4s forwards; }
+        .card.slide-out-down { animation: slideOutDown 0.4s forwards; }
+        .card.slide-in-left { animation: slideInLeft 0.4s forwards; }
+        .card.slide-in-right { animation: slideInRight 0.4s forwards; }
+        .card.slide-in-up { animation: slideInUp 0.4s forwards; }
+        .card.slide-in-down { animation: slideInDown 0.4s forwards; }
 
-        @keyframes slideInLeft {
-            from { transform: translateX(-150vw); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        @keyframes slideInRight {
-            from { transform: translateX(150vw); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        @keyframes slideInUp {
-            from { transform: translateY(-150vh); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        @keyframes slideInDown {
-            from { transform: translateY(150vh); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
+        @keyframes slideOutLeft { to { transform: translateX(-150vw); opacity: 0; } }
+        @keyframes slideOutRight { to { transform: translateX(150vw); opacity: 0; } }
+        @keyframes slideOutUp { to { transform: translateY(-150vh); opacity: 0; } }
+        @keyframes slideOutDown { to { transform: translateY(150vh); opacity: 0; } }
+        @keyframes slideInLeft { from { transform: translateX(-150vw); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes slideInRight { from { transform: translateX(150vw); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes slideInUp { from { transform: translateY(-150vh); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes slideInDown { from { transform: translateY(150vh); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        /* CARD FACES */
+        /* Card faces */
         .card-face {
             position: absolute;
             width: 100%;
             height: 100%;
             backface-visibility: hidden;
             border-radius: 6px;
-            
-            /* Neutral base */
             background: linear-gradient(145deg, #2a2a2e 0%, #1f1f23 100%);
-            
-            /* Enhanced shadows for depth */
             box-shadow: 
                 0 3px 10px rgba(0, 0, 0, 0.5),
                 0 10px 30px rgba(0, 0, 0, 0.4),
@@ -169,12 +141,11 @@
                 0 60px 120px rgba(0, 0, 0, 0.2),
                 inset 0 1px 0 rgba(255, 255, 255, 0.08),
                 inset 0 -1px 0 rgba(0, 0, 0, 0.3);
-            
             padding: 32px;
             overflow: hidden;
         }
 
-        /* Enhanced card thickness - left edge */
+        /* Card thickness - left edge */
         .card-face::before {
             content: '';
             position: absolute;
@@ -182,18 +153,12 @@
             left: -5px;
             width: 5px;
             height: 100%;
-            background: linear-gradient(
-                to right,
-                rgba(5, 5, 8, 0.95) 0%,
-                rgba(15, 15, 18, 0.8) 40%,
-                rgba(25, 25, 28, 0.5) 70%,
-                transparent 100%
-            );
+            background: linear-gradient(to right, rgba(5, 5, 8, 0.95) 0%, rgba(15, 15, 18, 0.8) 40%, rgba(25, 25, 28, 0.5) 70%, transparent 100%);
             box-shadow: inset -1px 0 2px rgba(0, 0, 0, 0.8);
             border-radius: 2px 0 0 2px;
         }
 
-        /* Enhanced card thickness - right edge */
+        /* Card thickness - right edge */
         .card-face::after {
             content: '';
             position: absolute;
@@ -201,24 +166,16 @@
             right: -5px;
             width: 5px;
             height: 100%;
-            background: linear-gradient(
-                to left,
-                rgba(5, 5, 8, 0.95) 0%,
-                rgba(15, 15, 18, 0.8) 40%,
-                rgba(25, 25, 28, 0.5) 70%,
-                transparent 100%
-            );
+            background: linear-gradient(to left, rgba(5, 5, 8, 0.95) 0%, rgba(15, 15, 18, 0.8) 40%, rgba(25, 25, 28, 0.5) 70%, transparent 100%);
             box-shadow: inset 1px 0 2px rgba(0, 0, 0, 0.8);
             border-radius: 0 2px 2px 0;
         }
 
-        /* Card back */
         .card-back {
             transform: rotateY(180deg);
             background: linear-gradient(145deg, #25252a 0%, #1a1a1e 100%);
         }
 
-        /* CARD CONTENT */
         .card-content {
             position: relative;
             z-index: 10;
@@ -243,49 +200,69 @@
             color: rgba(255, 255, 255, 0.4);
         }
 
-        /* FLIP BUTTON */
-        #flip-btn {
+        /* ========================================
+           SOCKET SYSTEM
+           Plug-and-play component containers
+           ======================================== */
+
+        .socket {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 56px;
-            height: 56px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #fff;
-            font-size: 24px;
-            cursor: pointer;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px dashed rgba(255, 255, 255, 0.2);
             z-index: 1000;
+            cursor: move;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s;
-            backdrop-filter: blur(10px);
         }
 
-        #flip-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: scale(1.05);
+        .socket:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.3);
         }
 
-        /* INFO */
-        #info {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 11px;
-            font-family: monospace;
-            z-index: 1000;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 12px 16px;
-            border-radius: 6px;
-            backdrop-filter: blur(10px);
+        /* Socket positions (draggable, can be repositioned) */
+        #socket-profile { top: 30px; left: 30px; }
+        #socket-settings { top: 30px; right: 30px; }
+        #socket-tools { bottom: 30px; left: 30px; }
+        #socket-flip { bottom: 30px; right: 30px; }
+
+        /* Socket labels (temporary - removed when component loads) */
+        .socket-label {
+            font-size: 8px;
+            color: rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
             pointer-events: none;
         }
 
-        #info div {
-            margin: 4px 0;
+        /* ========================================
+           INFO PANEL
+           Development helper (remove in production)
+           ======================================== */
+
+        #info {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 11px;
+            font-family: monospace;
+            z-index: 999;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 10px 16px;
+            border-radius: 6px;
+            backdrop-filter: blur(10px);
+            pointer-events: none;
+            text-align: center;
         }
-   
+
+        #info div {
+            margin: 3px 0;
+        }
+    </style>
