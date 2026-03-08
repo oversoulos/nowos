@@ -131,3 +131,50 @@
   50%  { transform: translateY(-12px) translateZ(20px); }
   100% { transform: translateY(0px) translateZ(0px); }
 }
+
+/* ============================
+   MOBILE RESPONSIVE FIXES
+   ============================ */
+
+@media (max-width: 600px) {
+
+  /* Scale the card down */
+  .card {
+    width: 180px;
+    height: 260px;
+    transform-origin: center center;
+  }
+
+  /* Adjust slab edges to match new size */
+  .edge-left,
+  .edge-right {
+    height: 100%;
+  }
+
+  .edge-top,
+  .edge-bottom {
+    width: 100%;
+  }
+
+  /* Fix perspective for small screens */
+  .world,
+  #card-container,
+  #zoom-wrap {
+    perspective: 900px !important;
+  }
+
+  /* Center the card */
+  #card-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Prevent overflow from canvases */
+  canvas,
+  .bg {
+    max-width: 100%;
+    max-height: 100%;
+    overflow: hidden;
+  }
+}
