@@ -2,7 +2,7 @@
 
 # Pick a card.
 
-**Nowos** — An experimental, decentralized card-based sandbox for creators.
+**nowos** — An experimental, decentralized card-based sandbox for creators.
 
 </div>
 
