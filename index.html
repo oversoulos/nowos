@@ -5,15 +5,315 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="foundation.css">
     <title>nowos</title>
+    <style>
+
+    :root {
+        --bg-void:       #03030a;
+        --bg-deep:       #06071a;
+        --bg-terrain:    #090d24;
+        --bg-horizon:    #0e1530;
+        --bg-atm:        rgba(24,48,130,0.14);
+        --terrain-hue:   222;
+        --card-bg:       #101622;
+        --card-tint:     rgba(80,140,255,0.06);
+        --card-shadow:   rgba(0,0,0,0.80);
+        --card-edge:     rgba(0,0,0,0.90);
+        --card-glow:     rgba(60,120,255,0.08);
+        --card-rim:      rgba(100,200,255,0.55);
+        --card-rim-night:rgba(60,120,255,0.35);
+        --card-rim-w:    1.5px;
+        --card-skin-url:   none;
+        --card-skin-blend: overlay;
+        --bg-skin-url:     none;
+        --text-a: rgba(255,255,255,0.88);
+        --text-b: rgba(255,255,255,0.38);
+        --text-c: rgba(255,255,255,0.14);
+        --accent:  #5abeff;
+        --sock-bg:     rgba(255,255,255,0.04);
+        --sock-border: rgba(255,255,255,0.12);
+        --star-warm: rgba(255,235,160,0.50);
+        --star-halo: rgba(255,185,55,0.14);
+        --nav-spd:  0.42s;
+        --zoom-spd: 0.55s;
+        --card-w:  230px;
+        --card-h:  322px;
+        --card-fw: 440px;
+        --card-fh: 616px;
+    }
+
+    [data-theme="ember"] {
+        --bg-void:#0c0602;--bg-deep:#180c04;--bg-terrain:#221008;--bg-horizon:#341808;
+        --bg-atm:rgba(140,50,10,0.16);--terrain-hue:22;
+        --card-bg:#1a0e08;--card-tint:rgba(255,100,20,0.06);--card-glow:rgba(255,100,20,0.08);
+        --card-rim:rgba(255,160,60,0.55);--card-rim-night:rgba(200,80,20,0.40);
+        --accent:#ff8844;--star-warm:rgba(255,200,80,0.55);--star-halo:rgba(255,120,20,0.18);
+    }
+    [data-theme="void"] {
+        --bg-void:#000;--bg-deep:#04040a;--bg-terrain:#080810;--bg-horizon:#10101c;
+        --bg-atm:rgba(80,20,140,0.16);--terrain-hue:270;
+        --card-bg:#08060e;--card-tint:rgba(120,40,255,0.05);--card-glow:rgba(120,40,255,0.09);
+        --card-rim:rgba(160,80,255,0.55);--card-rim-night:rgba(100,40,200,0.40);
+        --accent:#a060ff;--star-warm:rgba(200,160,255,0.50);--star-halo:rgba(100,40,255,0.16);
+    }
+    [data-theme="bio"] {
+        --bg-void:#010a04;--bg-deep:#03120a;--bg-terrain:#071a0e;--bg-horizon:#0d2818;
+        --bg-atm:rgba(20,120,50,0.16);--terrain-hue:148;
+        --card-bg:#06100a;--card-tint:rgba(40,200,80,0.05);--card-glow:rgba(40,200,80,0.07);
+        --card-rim:rgba(80,255,140,0.50);--card-rim-night:rgba(40,180,80,0.35);
+        --accent:#40ff90;--star-warm:rgba(160,255,180,0.45);--star-halo:rgba(40,200,80,0.14);
+    }
+
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+
+    html,body{
+        width:100%;height:100%;overflow:hidden;
+        background:var(--bg-void);
+        font-family:'SF Mono','Fira Code','Courier New',monospace;
+        touch-action:none;
+        -webkit-tap-highlight-color:transparent;
+    }
+
+    body{display:flex;align-items:center;justify-content:center;}
+
+    .bg{
+        position:fixed;top:-30%;left:-30%;
+        width:160%;height:160%;
+        pointer-events:none;will-change:transform;
+    }
+
+    #bg-planet{
+        z-index:1;
+        background:
+            var(--bg-skin-url,none),
+            radial-gradient(ellipse 145% 50% at 50% 116%,
+                var(--bg-horizon) 0%,var(--bg-terrain) 28%,
+                var(--bg-deep) 60%,var(--bg-void) 100%),
+            radial-gradient(ellipse 85% 28% at 50% 112%,
+                var(--bg-atm) 0%,transparent 68%);
+        background-size:cover,auto,auto;
+        background-blend-mode:overlay,normal,screen;
+        animation:planet-breathe 100s ease-in-out infinite alternate;
+        transition:transform 1.4s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    @keyframes planet-breathe{
+        0%  {filter:brightness(1.00) saturate(1.00);}
+        35% {filter:brightness(0.94) saturate(0.97);}
+        70% {filter:brightness(1.04) saturate(1.03);}
+        100%{filter:brightness(0.96) saturate(0.99);}
+    }
+
+    #terrain-canvas{position:fixed;inset:0;z-index:2;pointer-events:none;}
+
+    #bg-haze{
+        z-index:3;
+        background:radial-gradient(ellipse 105% 22% at 50% 105%,
+            var(--bg-atm) 0%,transparent 74%);
+        mix-blend-mode:screen;
+        transition:transform 0.7s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    #star-canvas{
+        position:fixed;inset:0;z-index:0;pointer-events:none;
+        opacity:0;transition:opacity 6s ease;
+    }
+
+    #sky{position:fixed;inset:0;z-index:4;pointer-events:none;mix-blend-mode:screen;}
+
+    #star{
+        position:fixed;z-index:5;pointer-events:none;
+        border-radius:50%;
+        background:radial-gradient(circle,
+            #fffde8 0%,#fff5a8 16%,
+            var(--star-warm) 42%,var(--star-halo) 68%,transparent 100%);
+        box-shadow:0 0 16px 5px var(--star-warm),0 0 50px 18px var(--star-halo);
+        filter:blur(0.5px);
+        transform:translate(-50%,-50%);
+        opacity:0;
+        will-change:left,top,opacity;
+        transition:opacity 5s ease;
+    }
+
+    #light-shadow{position:fixed;inset:0;z-index:6;pointer-events:none;}
+
+    #card-container{
+        position:relative;z-index:100;
+        transform-style:preserve-3d;
+        perspective:1400px;
+    }
+
+    #zoom-wrap{
+        transform:scale(1);
+        transition:transform var(--zoom-spd) cubic-bezier(0.4,0,0.2,1);
+        transform-origin:center center;
+    }
+
+    #zoom-wrap.zoomed   {transform:scale(1);}
+    #zoom-wrap.traveling{transform:scale(0.72);}
+
+    .card{
+        position:relative;
+        width:var(--card-w);height:var(--card-h);
+        transform-style:preserve-3d;
+        cursor:pointer;
+        transition:transform 0.88s cubic-bezier(0.34,1.4,0.64,1);
+    }
+
+    .card.flipped{transform:rotateY(180deg);}
+
+    .card-face{
+        position:absolute;inset:0;
+        backface-visibility:hidden;-webkit-backface-visibility:hidden;
+        border-radius:10px;overflow:hidden;padding:28px;
+        background:var(--card-bg);
+        box-shadow:
+            0  2px   5px var(--card-shadow),
+            0  8px  22px var(--card-shadow),
+            0 24px  58px rgba(0,0,0,0.34),
+            0 52px 100px rgba(0,0,0,0.18),
+            0 0 0 var(--card-rim-w) var(--card-rim),
+            0 0 18px 4px var(--card-rim),
+            0 0 38px 8px rgba(100,180,255,0.07),
+            inset 0  1px 0 rgba(255,255,255,0.08),
+            inset 0 -1px 0 rgba(0,0,0,0.40),
+            inset 0  0  32px var(--card-glow);
+        transition:box-shadow 3s ease;
+    }
+
+    .card-face::before{
+        content:'';position:absolute;
+        top:3px;left:-8px;width:8px;height:calc(100% - 6px);
+        background:linear-gradient(to right,var(--card-edge) 0%,rgba(10,10,22,0.44) 55%,transparent 100%);
+        border-radius:3px 0 0 3px;
+        box-shadow:-1px 0 8px 0 var(--card-rim);
+    }
+    .card-face::after{
+        content:'';position:absolute;
+        top:3px;right:-8px;width:8px;height:calc(100% - 6px);
+        background:linear-gradient(to left,var(--card-edge) 0%,rgba(10,10,22,0.44) 55%,transparent 100%);
+        border-radius:0 3px 3px 0;
+        box-shadow:1px 0 8px 0 var(--card-rim);
+    }
+
+    .card-skin{
+        position:absolute;inset:0;border-radius:10px;
+        background-image:var(--card-skin-url,none);
+        background-size:cover;background-position:center;
+        mix-blend-mode:var(--card-skin-blend,overlay);
+        opacity:0.55;pointer-events:none;z-index:1;
+        transition:opacity 1s ease;
+    }
+
+    .card-glass{
+        position:absolute;inset:0;border-radius:10px;
+        pointer-events:none;z-index:2;
+        background:
+            repeating-linear-gradient(43deg,transparent 0px,transparent 2px,rgba(255,255,255,0.011) 2px,rgba(255,255,255,0.011) 3px),
+            repeating-linear-gradient(-43deg,transparent 0px,transparent 2px,rgba(255,255,255,0.009) 2px,rgba(255,255,255,0.009) 3px),
+            repeating-linear-gradient(0deg,transparent 0px,transparent 3px,rgba(0,0,0,0.052) 3px,rgba(0,0,0,0.052) 4px);
+    }
+
+    .card-shine{
+        position:absolute;inset:0;border-radius:10px;
+        pointer-events:none;z-index:3;
+        opacity:0;transition:opacity 4s ease,background 3s ease;
+    }
+
+    .card-back{
+        transform:rotateY(180deg);
+        background:#080a14;
+    }
+
+    .card-content{
+        position:relative;z-index:10;
+        height:100%;display:flex;flex-direction:column;
+        align-items:center;justify-content:center;gap:10px;
+    }
+
+    .card-coord{
+        font-size:clamp(26px,5.5vw,40px);
+        font-weight:700;letter-spacing:-0.5px;
+        color:var(--text-a);
+        text-shadow:0 0 20px var(--accent),0 0 40px rgba(100,180,255,0.18),0 2px 4px rgba(0,0,0,0.55);
+    }
+
+    .card-label{
+        font-size:clamp(7px,1.6vw,9px);
+        letter-spacing:4px;text-transform:uppercase;
+        color:var(--text-b);
+    }
+
+    .card-node{
+        position:absolute;bottom:13px;right:13px;
+        font-size:clamp(6px,1.4vw,8px);
+        color:var(--text-c);letter-spacing:1px;
+    }
+
+    .card.out-l{animation:oL var(--nav-spd) cubic-bezier(0.55,0,1,0.8) forwards;}
+    .card.out-r{animation:oR var(--nav-spd) cubic-bezier(0.55,0,1,0.8) forwards;}
+    .card.out-u{animation:oU var(--nav-spd) cubic-bezier(0.55,0,1,0.8) forwards;}
+    .card.out-d{animation:oD var(--nav-spd) cubic-bezier(0.55,0,1,0.8) forwards;}
+    .card.in-l {animation:iL var(--nav-spd) cubic-bezier(0,0.2,0.3,1)  forwards;}
+    .card.in-r {animation:iR var(--nav-spd) cubic-bezier(0,0.2,0.3,1)  forwards;}
+    .card.in-u {animation:iU var(--nav-spd) cubic-bezier(0,0.2,0.3,1)  forwards;}
+    .card.in-d {animation:iD var(--nav-spd) cubic-bezier(0,0.2,0.3,1)  forwards;}
+
+    @keyframes oL{to{transform:translateX(-155vw);opacity:0;}}
+    @keyframes oR{to{transform:translateX( 155vw);opacity:0;}}
+    @keyframes iL{from{transform:translateX(-155vw);opacity:0;}to{transform:none;opacity:1;}}
+    @keyframes iR{from{transform:translateX( 155vw);opacity:0;}to{transform:none;opacity:1;}}
+    @keyframes oU{to{transform:translateY(-155vh) scale(0.7);opacity:0;}}
+    @keyframes oD{to{transform:translateY( 155vh) scale(1.12);opacity:0;}}
+    @keyframes iU{from{transform:translateY(-155vh) scale(0.7);opacity:0;}to{transform:none;opacity:1;}}
+    @keyframes iD{from{transform:translateY( 155vh) scale(1.12);opacity:0;}to{transform:none;opacity:1;}}
+
+    .socket{
+        position:fixed;
+        width:52px;height:52px;border-radius:50%;
+        background:var(--sock-bg);
+        border:1.5px dashed var(--sock-border);
+        z-index:1000;cursor:grab;
+        display:flex;flex-direction:column;
+        align-items:center;justify-content:center;gap:2px;
+        backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+        user-select:none;
+        transition:background 0.2s,border-color 0.2s,transform 0.15s,box-shadow 0.2s;
+    }
+
+    .socket:hover{
+        background:rgba(255,255,255,0.07);
+        border-color:var(--accent);
+        box-shadow:0 0 12px 2px var(--card-rim);
+        transform:scale(1.1);
+    }
+
+    .socket:active{cursor:grabbing;}
+    .socket-icon{font-size:16px;color:var(--text-b);pointer-events:none;}
+    .socket-lbl{font-size:6px;color:var(--text-c);letter-spacing:1px;text-transform:uppercase;pointer-events:none;}
+
+    #s-profile {top:22px;left:22px;}
+    #s-settings{top:22px;right:22px;}
+    #s-tools   {bottom:22px;left:22px;}
+    #s-flip    {bottom:22px;right:22px;}
+
+    #hud{
+        position:fixed;bottom:14px;left:50%;
+        transform:translateX(-50%);
+        z-index:999;
+        color:var(--text-c);font-size:9px;letter-spacing:1.4px;
+        pointer-events:none;white-space:nowrap;
+    }
+
+    #hud b{color:var(--accent);font-weight:400;}
+
+    </style>
 </head>
 <body>
 
     <canvas id="star-canvas"></canvas>
-
     <div class="bg" id="bg-planet"></div>
     <canvas id="terrain-canvas"></canvas>
     <div class="bg" id="bg-haze"></div>
-
     <div id="sky"></div>
     <div id="star"></div>
     <div id="light-shadow"></div>
@@ -53,400 +353,184 @@
     <div id="hud">POS <b id="hud-pos">0, 0</b></div>
 
     <script>
-/* ================================================
-   NOWOS FOUNDATION — JS
-================================================ */
 
-const S = {
-    x:0, y:0,
-    nav:false,
-    invert:false,
-    state:'zoomed',
-    idleT:null,
-    t0:Date.now(),
-    RT:28800000, DEMO:120000, demo:false,
-    stars:true, pulse:true,
-    bgScale:1,
-};
-
-const el       = id => document.getElementById(id);
-const card     = el('card');
-const zoomWrap = el('zoom-wrap');
-const coord    = el('coord');
-const cardNode = el('card-node');
-const bgPlanet = el('bg-planet');
-const bgHaze   = el('bg-haze');
-const sky      = el('sky');
-const starEl   = el('star');
-const shadow   = el('light-shadow');
-const shine    = el('card-shine');
-const hudPos   = el('hud-pos');
-const terrCvs  = el('terrain-canvas');
-const starCvs  = el('star-canvas');
-const tCtx     = terrCvs.getContext('2d');
-const sCtx     = starCvs.getContext('2d');
-const root     = document.documentElement;
-
-/* ---- SIZING ---- */
-function sizeCard() {
-    const vw = window.innerWidth, vh = window.innerHeight;
-    const base = Math.min(vw * 0.58, vh * 0.48, 280);
-    root.style.setProperty('--card-w', Math.round(base) + 'px');
-    root.style.setProperty('--card-h', Math.round(base * 1.4) + 'px');
-    const fw = Math.round(Math.min(vw * 0.70, vh * 0.62, 420));
-    root.style.setProperty('--card-fw', fw + 'px');
-    root.style.setProperty('--card-fh', Math.round(fw * 1.4) + 'px');
-}
-
-/* ---- ZOOM ---- */
-function setZoom(state) {
-    S.state = state;
-    zoomWrap.classList.toggle('zoomed',    state === 'zoomed');
-    zoomWrap.classList.toggle('traveling', state === 'traveling');
-}
-
-function zoomSpd() {
-    return parseFloat(getComputedStyle(root).getPropertyValue('--zoom-spd')) * 1000 || 550;
-}
-
-function navSpd() {
-    return parseFloat(getComputedStyle(root).getPropertyValue('--nav-spd')) * 1000 || 420;
-}
-
-function startIdle() {
-    clearTimeout(S.idleT);
-    S.idleT = setTimeout(() => {
-        if (!S.nav && !card.classList.contains('flipped')) setZoom('zoomed');
-    }, 10000);
-}
-
-/* ---- NAVIGATE ---- */
-function navigate(dx, dy) {
-    if (S.nav) return;
-    if (card.classList.contains('flipped')) return;
-
-    S.nav = true;
-    clearTimeout(S.idleT);
-
-    const nx = S.invert ? -dx : dx;
-    const ny = S.invert ? -dy : dy;
-
-    setZoom('traveling');
-
-    const doTravel = () => {
-        S.x += nx;
-        S.y += ny;
-
-        const bx = S.x * 14;
-        const by = S.y * 14;
-
-        if (dy !== 0) {
-            S.bgScale = Math.max(0.82, Math.min(1.22, S.bgScale + (-dy * 0.04)));
-        }
-
-        bgPlanet.style.transform = `translate(${-bx}px, ${-by}px) scale(${S.bgScale})`;
-        bgHaze.style.transform   = `translate(${-bx * 0.6}px, ${-by * 0.6}px)`;
-
-        const [oC, iC] =
-            nx > 0 ? ['out-l', 'in-r'] :
-            nx < 0 ? ['out-r', 'in-l'] :
-            ny < 0 ? ['out-u', 'in-d'] :
-                     ['out-d', 'in-u'];
-
-        card.classList.add(oC);
-        const spd = navSpd();
-
-        setTimeout(() => {
-            coord.textContent    = `${S.x}, ${S.y}`;
-            cardNode.textContent = `NODE · ${hex4(S.x, S.y)}`;
-            hudPos.textContent   = `${S.x}, ${S.y}`;
-            card.classList.remove(oC);
-            card.classList.add(iC);
-            setTimeout(() => {
-                card.classList.remove(iC);
-                S.nav = false;
-                startIdle();
-            }, spd);
-        }, spd);
+    const S = {
+        x:0, y:0,
+        nav:false,
+        invert:false,
+        state:'zoomed',
+        idleT:null,
+        t0:Date.now(),
+        RT:28800000, DEMO:120000, demo:false,
+        stars:true, pulse:true,
+        bgScale:1,
     };
 
-    if (S.state === 'traveling') {
-        doTravel();
-    } else {
-        setTimeout(doTravel, zoomSpd() * 0.6);
-    }
-}
+    const el       = id => document.getElementById(id);
+    const card     = el('card');
+    const zoomWrap = el('zoom-wrap');
+    const coord    = el('coord');
+    const cardNode = el('card-node');
+    const bgPlanet = el('bg-planet');
+    const bgHaze   = el('bg-haze');
+    const sky      = el('sky');
+    const starEl   = el('star');
+    const shadow   = el('light-shadow');
+    const shine    = el('card-shine');
+    const hudPos   = el('hud-pos');
+    const terrCvs  = el('terrain-canvas');
+    const starCvs  = el('star-canvas');
+    const tCtx     = terrCvs.getContext('2d');
+    const sCtx     = starCvs.getContext('2d');
+    const root     = document.documentElement;
 
-function hex4(x, y) {
-    return (((x & 0xFF) << 8) | (y & 0xFF)).toString(16).toUpperCase().padStart(4, '0');
-}
-
-/* ---- FLIP ---- */
-function flip() {
-    if (S.nav) return;
-    card.classList.toggle('flipped');
-    card.classList.contains('flipped') ? clearTimeout(S.idleT) : startIdle();
-}
-
-/* ---- DAY/NIGHT ---- */
-function progress() {
-    const dur = S.demo ? S.DEMO : S.RT;
-    return ((Date.now() - S.t0) % dur) / dur;
-}
-
-function themeHue() {
-    return parseInt(getComputedStyle(root).getPropertyValue('--terrain-hue')) || 222;
-}
-
-function updateLight(ts) {
-    const p = progress(), isDay = p < 0.5;
-    const dayP = p * 2, ngtP = (p - 0.5) * 2;
-    const arc = isDay ? Math.sin(dayP * Math.PI) : 0;
-    const H = themeHue();
-
-    if (isDay) {
-        starEl.style.left    = `${-6 + dayP * 112}vw`;
-        starEl.style.top     = `${84 - arc * 78}vh`;
-        starEl.style.opacity = (0.15 + arc * 0.48).toFixed(3);
-        const sz = Math.round(26 + arc * 18);
-        starEl.style.width  = sz + 'px';
-        starEl.style.height = sz + 'px';
-    } else {
-        starEl.style.opacity = '0';
+    function sizeCard() {
+        const vw=window.innerWidth, vh=window.innerHeight;
+        const base=Math.min(vw*0.58,vh*0.48,280);
+        root.style.setProperty('--card-w', Math.round(base)+'px');
+        root.style.setProperty('--card-h', Math.round(base*1.4)+'px');
+        const fw=Math.round(Math.min(vw*0.70,vh*0.62,420));
+        root.style.setProperty('--card-fw', fw+'px');
+        root.style.setProperty('--card-fh', Math.round(fw*1.4)+'px');
     }
 
-    let skyBg = '';
-    if (isDay) {
-        if (dayP < 0.13) {
-            const t = dayP / 0.13;
-            skyBg = `linear-gradient(to bottom,hsla(${H-178},68%,44%,${(0.17*t).toFixed(3)}) 0%,transparent 72%)`;
-        } else if (dayP > 0.87) {
-            const t = (dayP - 0.87) / 0.13;
-            skyBg = `linear-gradient(to bottom,hsla(${H-198},72%,38%,${(0.17*t).toFixed(3)}) 0%,transparent 72%)`;
-        } else {
-            const m = Math.sin((dayP - 0.13) / 0.74 * Math.PI);
-            skyBg = `linear-gradient(to bottom,hsla(${H},48%,50%,${(0.07*m).toFixed(3)}) 0%,transparent 78%)`;
-        }
-    } else {
-        const pulse = S.pulse ? (0.07 + Math.sin(ts * 0.00036) * 0.032).toFixed(3) : '0.07';
-        skyBg = `radial-gradient(ellipse at 50% 40%,hsla(${H},48%,24%,${pulse}) 0%,transparent 65%)`;
-    }
-    sky.style.background = skyBg;
-
-    if (isDay) {
-        const ang = 88 + dayP * 184;
-        const str = (0.022 + arc * 0.062).toFixed(3);
-        shadow.style.background = `linear-gradient(${ang}deg,rgba(0,0,0,${str}) 0%,transparent 52%)`;
-        shine.style.background  = `radial-gradient(ellipse at ${(dayP*100).toFixed(1)}% 24%,rgba(255,245,190,${(arc*0.05).toFixed(3)}) 0%,transparent 50%)`;
-        shine.style.opacity = '1';
-    } else {
-        shadow.style.background = 'none';
-        shine.style.opacity = '0';
+    function setZoom(state) {
+        S.state = state;
+        zoomWrap.classList.toggle('zoomed',    state==='zoomed');
+        zoomWrap.classList.toggle('traveling', state==='traveling');
     }
 
-    const starA = isDay
-        ? Math.max(0, 1 - dayP * 7).toFixed(3)
-        : Math.min(1, ngtP * 4).toFixed(3);
-    starCvs.style.opacity = S.stars ? starA : '0';
-}
-
-/* ---- TERRAIN ---- */
-const BLOBS = [];
-
-function initBlobs() {
-    BLOBS.length = 0;
-    const H = themeHue();
-    for (let i = 0; i < 14; i++) {
-        BLOBS.push({
-            x:   Math.random(),
-            y:   0.28 + Math.random() * 0.72,
-            rx:  0.06  + Math.random() * 0.19,
-            ry:  0.032 + Math.random() * 0.10,
-            spd: (0.11 + Math.random() * 0.36) * (Math.random() < 0.5 ? 1 : -1),
-            ph:  Math.random() * Math.PI * 2,
-            a:   0.028 + Math.random() * 0.046,
-            dh:  Math.floor(Math.random() * 36) - 18,
-            H,
-        });
+    function zoomSpd() {
+        return parseFloat(getComputedStyle(root).getPropertyValue('--zoom-spd'))*1000||550;
     }
-}
 
-function drawTerrain(ts) {
-    const W = terrCvs.width, H = terrCvs.height;
-    tCtx.clearRect(0, 0, W, H);
-    for (const b of BLOBS) {
-        const ang = ts * 0.000030 * b.spd + b.ph;
-        const bx  = ((b.x + Math.cos(ang) * 0.04 + 1) % 1) * W;
-        const by  = (b.y + Math.sin(ang * 0.6) * 0.022) * H;
-        const hue = b.H + b.dh;
-        const sc  = b.ry / b.rx;
-        const g   = tCtx.createRadialGradient(bx, by, 0, bx, by, b.rx * W);
-        g.addColorStop(0,   `hsla(${hue},50%,44%,${b.a})`);
-        g.addColorStop(0.5, `hsla(${hue},36%,28%,${(b.a * 0.35).toFixed(3)})`);
-        g.addColorStop(1,   'transparent');
-        tCtx.save();
-        tCtx.transform(1, 0, 0, sc, 0, by * (1 - sc));
-        tCtx.fillStyle = g;
-        tCtx.beginPath();
-        tCtx.arc(bx, by / sc, b.rx * W, 0, Math.PI * 2);
-        tCtx.fill();
-        tCtx.restore();
+    function navSpd() {
+        return parseFloat(getComputedStyle(root).getPropertyValue('--nav-spd'))*1000||420;
     }
-}
 
-/* ---- STARS ---- */
-const STARS = [];
-
-function initStars() {
-    STARS.length = 0;
-    for (let i = 0; i < 280; i++) {
-        STARS.push({
-            x:  Math.random(),
-            y:  Math.random() * 0.70,
-            r:  0.2 + Math.random() * 1.0,
-            l:  0.3 + Math.random() * 0.7,
-            tw: 0.0008 + Math.random() * 0.0024,
-            ph: Math.random() * Math.PI * 2,
-        });
-    }
-}
-
-function drawStars(ts) {
-    const W = starCvs.width, H = starCvs.height;
-    sCtx.clearRect(0, 0, W, H);
-    for (const s of STARS) {
-        const tw = S.pulse ? 0.30 + Math.sin(ts * s.tw + s.ph) * 0.70 : 0.70;
-        const a  = s.l * tw;
-        const sx = s.x * W, sy = s.y * H;
-        sCtx.beginPath();
-        sCtx.arc(sx, sy, s.r, 0, Math.PI * 2);
-        sCtx.fillStyle = `rgba(210,224,255,${a.toFixed(3)})`;
-        sCtx.fill();
-        if (s.l > 0.66 && tw > 0.60) {
-            sCtx.strokeStyle = `rgba(210,224,255,${(a * 0.26).toFixed(3)})`;
-            sCtx.lineWidth = 0.5;
-            sCtx.beginPath();
-            sCtx.moveTo(sx - s.r * 3.5, sy); sCtx.lineTo(sx + s.r * 3.5, sy);
-            sCtx.moveTo(sx, sy - s.r * 3.5); sCtx.lineTo(sx, sy + s.r * 3.5);
-            sCtx.stroke();
-        }
-    }
-}
-
-/* ---- INPUT ---- */
-document.addEventListener('keydown', e => {
-    const map = { ArrowLeft:[-1,0], ArrowRight:[1,0], ArrowUp:[0,-1], ArrowDown:[0,1] };
-    if (map[e.key]) { e.preventDefault(); navigate(...map[e.key]); }
-    if (e.key === ' ' || e.key === 'f' || e.key === 'F') { e.preventDefault(); flip(); }
-});
-
-let tx = 0, ty = 0;
-document.addEventListener('touchstart', e => {
-    tx = e.changedTouches[0].screenX;
-    ty = e.changedTouches[0].screenY;
-}, { passive: true });
-
-document.addEventListener('touchend', e => {
-    const dx = e.changedTouches[0].screenX - tx;
-    const dy = e.changedTouches[0].screenY - ty;
-    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) navigate(dx > 0 ? -1 : 1, 0);
-    else if (Math.abs(dy) > 50) navigate(0, dy > 0 ? 1 : -1);
-}, { passive: true });
-
-card.addEventListener('click', () => {
-    if (S.nav) return;
-    if (S.state !== 'zoomed') {
+    function startIdle() {
         clearTimeout(S.idleT);
-        setZoom('zoomed');
-    } else {
-        flip();
+        S.idleT = setTimeout(()=>{
+            if(!S.nav && !card.classList.contains('flipped')) setZoom('zoomed');
+        }, 10000);
     }
-});
 
-el('s-flip').addEventListener('click', function() {
-    if (!this.__drag) flip();
-});
+    function navigate(dx, dy) {
+        if (S.nav) return;
+        if (card.classList.contains('flipped')) return;
+        S.nav = true;
+        clearTimeout(S.idleT);
+        const nx = S.invert ? -dx : dx;
+        const ny = S.invert ? -dy : dy;
+        setZoom('traveling');
 
-/* ---- SOCKET DRAG ---- */
-document.querySelectorAll('.socket').forEach(sock => {
-    let ox = 0, oy = 0;
-    const gp = e => e.touches
-        ? { x: e.touches[0].clientX, y: e.touches[0].clientY }
-        : { x: e.clientX,            y: e.clientY };
+        const doTravel = () => {
+            S.x += nx; S.y += ny;
+            const bx = S.x * 14;
+            const by = S.y * 14;
+            if (dy !== 0) {
+                S.bgScale = Math.max(0.82, Math.min(1.22, S.bgScale + (-dy * 0.04)));
+            }
+            bgPlanet.style.transform = `translate(${-bx}px,${-by}px) scale(${S.bgScale})`;
+            bgHaze.style.transform   = `translate(${-bx*0.6}px,${-by*0.6}px)`;
 
-    const down = e => {
-        sock.__drag = false;
-        const p = gp(e), r = sock.getBoundingClientRect();
-        ox = p.x - r.left;
-        oy = p.y - r.top;
+            const [oC,iC] =
+                nx>0?['out-l','in-r']:
+                nx<0?['out-r','in-l']:
+                ny<0?['out-u','in-d']:
+                     ['out-d','in-u'];
 
-        const move = e2 => {
-            sock.__drag = true;
-            e2.preventDefault();
-            const p2 = gp(e2);
-            sock.style.left   = `${p2.x - ox}px`;
-            sock.style.top    = `${p2.y - oy}px`;
-            sock.style.right  = 'auto';
-            sock.style.bottom = 'auto';
+            card.classList.add(oC);
+            const spd = navSpd();
+            setTimeout(()=>{
+                coord.textContent    = `${S.x}, ${S.y}`;
+                cardNode.textContent = `NODE · ${hex4(S.x,S.y)}`;
+                hudPos.textContent   = `${S.x}, ${S.y}`;
+                card.classList.remove(oC);
+                card.classList.add(iC);
+                setTimeout(()=>{
+                    card.classList.remove(iC);
+                    S.nav = false;
+                    startIdle();
+                }, spd);
+            }, spd);
         };
-        const up = () => {
-            window.removeEventListener('mousemove', move);
-            window.removeEventListener('touchmove', move);
-            window.removeEventListener('mouseup', up);
-            window.removeEventListener('touchend', up);
-            setTimeout(() => { sock.__drag = false; }, 60);
-        };
-        window.addEventListener('mousemove', move);
-        window.addEventListener('touchmove', move, { passive: false });
-        window.addEventListener('mouseup', up);
-        window.addEventListener('touchend', up);
-    };
 
-    sock.addEventListener('mousedown', down);
-    sock.addEventListener('touchstart', down, { passive: true });
-});
+        if (S.state === 'traveling') {
+            doTravel();
+        } else {
+            setTimeout(doTravel, zoomSpd() * 0.6);
+        }
+    }
 
-/* ---- INIT + LOOP ---- */
-function resize() {
-    const w = window.innerWidth, h = window.innerHeight;
-    terrCvs.width  = starCvs.width  = w;
-    terrCvs.height = starCvs.height = h;
-    sizeCard();
-}
+    function hex4(x,y) {
+        return(((x&0xFF)<<8)|(y&0xFF)).toString(16).toUpperCase().padStart(4,'0');
+    }
 
-window.addEventListener('resize', () => { resize(); initStars(); initBlobs(); });
-resize();
-initStars();
-initBlobs();
-setZoom('zoomed');
-startIdle();
+    function flip() {
+        if (S.nav) return;
+        card.classList.toggle('flipped');
+        card.classList.contains('flipped') ? clearTimeout(S.idleT) : startIdle();
+    }
 
-function loop(ts) {
-    updateLight(ts);
-    drawTerrain(ts);
-    drawStars(ts);
-    requestAnimationFrame(loop);
-}
+    function progress() {
+        const dur = S.demo ? S.DEMO : S.RT;
+        return ((Date.now()-S.t0) % dur) / dur;
+    }
 
-requestAnimationFrame(loop);
+    function themeHue() {
+        return parseInt(getComputedStyle(root).getPropertyValue('--terrain-hue'))||222;
+    }
 
-/* ================================================
-   SKIN API — call from plugins:
+    function updateLight(ts) {
+        const p=progress(), isDay=p<0.5;
+        const dayP=p*2, ngtP=(p-0.5)*2;
+        const arc=isDay?Math.sin(dayP*Math.PI):0;
+        const H=themeHue();
 
-   Card texture:
-     root.style.setProperty('--card-skin-url','url("tex.jpg")')
+        if(isDay){
+            starEl.style.left   =`${-6+dayP*112}vw`;
+            starEl.style.top    =`${84-arc*78}vh`;
+            starEl.style.opacity=(0.15+arc*0.48).toFixed(3);
+            const sz=Math.round(26+arc*18);
+            starEl.style.width=sz+'px'; starEl.style.height=sz+'px';
+        } else {
+            starEl.style.opacity='0';
+        }
 
-   Background image:
-     root.style.setProperty('--bg-skin-url','url("bg.jpg")')
+        let skyBg='';
+        if(isDay){
+            if(dayP<0.13){
+                const t=dayP/0.13;
+                skyBg=`linear-gradient(to bottom,hsla(${H-178},68%,44%,${(0.17*t).toFixed(3)}) 0%,transparent 72%)`;
+            } else if(dayP>0.87){
+                const t=(dayP-0.87)/0.13;
+                skyBg=`linear-gradient(to bottom,hsla(${H-198},72%,38%,${(0.17*t).toFixed(3)}) 0%,transparent 72%)`;
+            } else {
+                const m=Math.sin((dayP-0.13)/0.74*Math.PI);
+                skyBg=`linear-gradient(to bottom,hsla(${H},48%,50%,${(0.07*m).toFixed(3)}) 0%,transparent 78%)`;
+            }
+        } else {
+            const pulse=S.pulse?(0.07+Math.sin(ts*0.00036)*0.032).toFixed(3):'0.07';
+            skyBg=`radial-gradient(ellipse at 50% 40%,hsla(${H},48%,24%,${pulse}) 0%,transparent 65%)`;
+        }
+        sky.style.background=skyBg;
 
-   Theme:
-     root.dataset.theme = 'ember' | 'void' | 'bio' | ''
+        if(isDay){
+            const ang=88+dayP*184, str=(0.022+arc*0.062).toFixed(3);
+            shadow.style.background=`linear-gradient(${ang}deg,rgba(0,0,0,${str}) 0%,transparent 52%)`;
+            shine.style.background=`radial-gradient(ellipse at ${(dayP*100).toFixed(1)}% 24%,rgba(255,245,190,${(arc*0.05).toFixed(3)}) 0%,transparent 50%)`;
+            shine.style.opacity='1';
+        } else {
+            shadow.style.background='none';
+            shine.style.opacity='0';
+        }
 
-   Fast day/night cycle for testing:
-     S.demo = true; S.t0 = Date.now();
-================================================ */
-    
+        const starA=isDay?Math.max(0,1-dayP*7).toFixed(3):Math.min(1,ngtP*4).toFixed(3);
+        starCvs.style.opacity=S.stars?starA:'0';
+    }
 
- </script>
-</body>
-</html>
+    const BLOBS=[];
+
+    function initBlobs(){
+        BLOBS.
