@@ -178,3 +178,7 @@
     overflow: hidden;
   }
 }
+.edge {
+    position: absolute;
+    z-index: 5;
+}
