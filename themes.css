@@ -1,0 +1,150 @@
+/* ================================================
+   NOWOS — themes.css
+   AESTHETICS ONLY. No layout or structure here.
+
+   This file is your visual library.
+   Add a new theme by adding a new [data-theme] block.
+   Switch themes in JS: document.documentElement.dataset.theme = 'ember'
+   Reset to default:    document.documentElement.dataset.theme = ''
+
+   This file defines:
+   - The default color palette (overrides foundation slots)
+   - All named themes
+   - Future: user custom themes loaded from library
+
+   To add a new theme, copy any [data-theme] block,
+   give it a new name, and change the colors.
+   That's literally all you need to do.
+   ================================================ */
+
+
+/* ------------------------------------------------
+   DEFAULT THEME — Deep Space Blue
+   This is what loads when no theme is selected.
+   It fills in all the empty slots from foundation.css
+   ------------------------------------------------ */
+:root {
+    /* Background — dark void with blue-indigo planet */
+    --bg-void:        #03030a;
+    --bg-deep:        #06071a;
+    --bg-terrain:     #090d24;
+    --bg-horizon:     #0e1530;
+    --bg-atm:         rgba(24, 48, 130, 0.14);
+    --terrain-hue:    222;
+
+    /* Card — solid dark blue, clearly separate from bg */
+    --card-bg:        #101622;
+    --card-tint:      rgba(80, 140, 255, 0.06);
+    --card-shadow:    rgba(0, 0, 0, 0.80);
+    --card-edge:      rgba(0, 0, 0, 0.90);
+    --card-glow:      rgba(60, 120, 255, 0.08);
+
+    /* Rim glow — cyan neon edge */
+    --card-rim:       rgba(100, 200, 255, 0.55);
+    --card-rim-night: rgba(60,  120, 255, 0.35);
+    --card-rim-w:     1.5px;
+
+    /* Text */
+    --text-a: rgba(255, 255, 255, 0.88);
+    --text-b: rgba(255, 255, 255, 0.38);
+    --text-c: rgba(255, 255, 255, 0.14);
+    --accent:  #5abeff;
+
+    /* Sockets */
+    --sock-bg:     rgba(255, 255, 255, 0.04);
+    --sock-border: rgba(255, 255, 255, 0.12);
+
+    /* Sun / light source */
+    --star-warm: rgba(255, 235, 160, 0.50);
+    --star-halo: rgba(255, 185, 55,  0.14);
+}
+
+
+/* ------------------------------------------------
+   THEME: EMBER
+   Hot volcanic world. Deep reds and orange.
+   Activate: document.documentElement.dataset.theme = 'ember'
+   ------------------------------------------------ */
+[data-theme="ember"] {
+    --bg-void:        #0c0602;
+    --bg-deep:        #180c04;
+    --bg-terrain:     #221008;
+    --bg-horizon:     #341808;
+    --bg-atm:         rgba(140, 50, 10, 0.16);
+    --terrain-hue:    22;
+
+    --card-bg:        #1a0e08;
+    --card-tint:      rgba(255, 100, 20, 0.06);
+    --card-glow:      rgba(255, 100, 20, 0.08);
+    --card-rim:       rgba(255, 160, 60, 0.55);
+    --card-rim-night: rgba(200,  80, 20, 0.40);
+
+    --accent:         #ff8844;
+    --star-warm:      rgba(255, 200, 80, 0.55);
+    --star-halo:      rgba(255, 120, 20, 0.18);
+}
+
+
+/* ------------------------------------------------
+   THEME: VOID
+   Pure black space. Deep purple energy.
+   Activate: document.documentElement.dataset.theme = 'void'
+   ------------------------------------------------ */
+[data-theme="void"] {
+    --bg-void:        #000000;
+    --bg-deep:        #04040a;
+    --bg-terrain:     #080810;
+    --bg-horizon:     #10101c;
+    --bg-atm:         rgba(80, 20, 140, 0.16);
+    --terrain-hue:    270;
+
+    --card-bg:        #08060e;
+    --card-tint:      rgba(120, 40, 255, 0.05);
+    --card-glow:      rgba(120, 40, 255, 0.09);
+    --card-rim:       rgba(160,  80, 255, 0.55);
+    --card-rim-night: rgba(100,  40, 200, 0.40);
+
+    --accent:         #a060ff;
+    --star-warm:      rgba(200, 160, 255, 0.50);
+    --star-halo:      rgba(100,  40, 255, 0.16);
+}
+
+
+/* ------------------------------------------------
+   THEME: BIO
+   Living world. Deep greens, bioluminescent glow.
+   Activate: document.documentElement.dataset.theme = 'bio'
+   ------------------------------------------------ */
+[data-theme="bio"] {
+    --bg-void:        #010a04;
+    --bg-deep:        #03120a;
+    --bg-terrain:     #071a0e;
+    --bg-horizon:     #0d2818;
+    --bg-atm:         rgba(20, 120, 50, 0.16);
+    --terrain-hue:    148;
+
+    --card-bg:        #06100a;
+    --card-tint:      rgba(40, 200, 80, 0.05);
+    --card-glow:      rgba(40, 200, 80, 0.07);
+    --card-rim:       rgba(80, 255, 140, 0.50);
+    --card-rim-night: rgba(40, 180,  80, 0.35);
+
+    --accent:         #40ff90;
+    --star-warm:      rgba(160, 255, 180, 0.45);
+    --star-halo:      rgba( 40, 200,  80, 0.14);
+}
+
+
+/* ------------------------------------------------
+   ADD YOUR OWN THEME BELOW THIS LINE
+   Copy any block above, change the name and colors.
+   Example:
+
+   [data-theme="my-theme"] {
+       --bg-void:    #your-color;
+       --card-bg:    #your-color;
+       --card-rim:   rgba(r, g, b, opacity);
+       --accent:     #your-color;
+       ... etc
+   }
+   ------------------------------------------------ */
