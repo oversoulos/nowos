@@ -21,7 +21,9 @@ An infinite grid of customizable cards. Each card is yours to build on. No middl
 ## The Idea
 It's a sandbox. You know what to do.
 
-## Iframes/Content Cards
+
+## Pilot Plugins
+### Iframes/Content Cards
 - Text / flyer / blog / news / job board / classifieds
 - Live chat
 - Forum
@@ -32,21 +34,13 @@ It's a sandbox. You know what to do.
 - For sale listing
 - Indie app embed
 
-## Plug-In-Play
+### Plug-In-Play
 - Profile (pic, emoji rating, level bar, anon switch)
 - Wallet (linked accounts, crypto,local, token, NFT, business card)
 - Aesthetic (themes, palettes, skins, backgrounds)
 - Catalogue (saved uploads, active uploads)
 - Decks (owned, rented, interested)
 - Encryption
-
-
-
-
-Future features include community tokens, decentralized hosting, and tools for creators. But we're starting simple.
-
-## Pilot Plugins
-
 
 ## Want to contribute?
 
@@ -55,7 +49,7 @@ We're looking for help with:
 - Backend architecture
 - Whatever you think it needs
 
-Open an issue or [email](mailto:sooversoulo@gmail.com).
+Openn issue or [email](mailto:sooversoulo@gmail.com).
 
 ## License
 
