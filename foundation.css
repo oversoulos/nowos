@@ -1,268 +1,295 @@
+/* ========================================
+   FOUNDATION CSS - CORE SYSTEM
+   Edit only when changing base structure
+   ======================================== */
 
-        /* ========================================
-           FOUNDATION CSS - CORE SYSTEM
-           Edit only when changing base structure
-           ======================================== */
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        /* RESET */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+body {
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 2000px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
 
-        body {
-            overflow: hidden;
-            width: 100vw;
-            height: 100vh;
-            background: #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            perspective: 2000px;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        }
+/* ========================================
+   BACKGROUND LAYERS
+   3-layer parallax system
+   ======================================== */
 
-        /* ========================================
-           BACKGROUND LAYERS
-           3-layer parallax system
-           ======================================== */
+.bg-layer {
+    position: fixed;
+    top: -25%;
+    left: -25%;
+    width: 150%;
+    height: 150%;
+    will-change: transform;
+}
 
-        .bg-layer {
-            position: fixed;
-            top: -25%;
-            left: -25%;
-            width: 150%;
-            height: 150%;
-            will-change: transform;
-        }
+/* Far layer - slowest movement */
+.bg-far {
+    z-index: 1;
+    background: linear-gradient(135deg, #0a0820 0%, #1a1535 50%, #2a3550 100%);
+    filter: blur(8px);
+    animation: drift 40s infinite alternate ease-in-out;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-        /* Far layer - slowest movement */
-        .bg-far {
-            z-index: 1;
-            background: linear-gradient(135deg, #0a0820 0%, #1a1535 50%, #2a3550 100%);
-            filter: blur(8px);
-            animation: drift 40s infinite alternate ease-in-out;
-            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+/* Mid layer - medium movement */
+.bg-mid {
+    z-index: 2;
+    background: radial-gradient(circle at 30% 40%, rgba(100, 200, 220, 0.08) 0%, transparent 50%);
+    filter: blur(4px);
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-        /* Mid layer - medium movement */
-        .bg-mid {
-            z-index: 2;
-            background: radial-gradient(circle at 30% 40%, rgba(100, 200, 220, 0.08) 0%, transparent 50%);
-            filter: blur(4px);
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+/* Near layer - fastest movement */
+.bg-near {
+    z-index: 3;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(100, 200, 220, 0.02) 3px,
+        rgba(100, 200, 220, 0.02) 6px
+    );
+    filter: blur(1px);
+    opacity: 0.3;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-        /* Near layer - fastest movement */
-        .bg-near {
-            z-index: 3;
-            background: repeating-linear-gradient(
-                0deg,
-                transparent,
-                transparent 3px,
-                rgba(100, 200, 220, 0.02) 3px,
-                rgba(100, 200, 220, 0.02) 6px
-            );
-            filter: blur(1px);
-            opacity: 0.3;
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+@keyframes drift {
+    0% { transform: translate(0, 0) scale(1.05); }
+    100% { transform: translate(-3%, 3%) scale(1.08); }
+}
 
-        @keyframes drift {
-            0% { transform: translate(0, 0) scale(1.05); }
-            100% { transform: translate(-3%, 3%) scale(1.08); }
-        }
+/* ========================================
+   CARD SYSTEM
+   Core navigation element
+   ======================================== */
 
-        /* ========================================
-           CARD SYSTEM
-           Core navigation element
-           ======================================== */
+#card-container {
+    position: relative;
+    z-index: 100;
+    transform-style: preserve-3d;
+}
 
-        #card-container {
-            position: relative;
-            z-index: 100;
-            transform-style: preserve-3d;
-        }
+.card {
+    position: relative;
+    width: 220px;
+    height: 310px;
+    transform-style: preserve-3d;
+    transition: 
+        transform 0.9s cubic-bezier(0.34, 1.56, 0.64, 1),
+        width 0.6s ease,
+        height 0.6s ease;
+}
 
-        .card {
-            position: relative;
-            width: 220px;
-            height: 310px;
-            transform-style: preserve-3d;
-            transition: 
-                transform 0.9s cubic-bezier(0.34, 1.56, 0.64, 1),
-                width 0.6s ease,
-                height 0.6s ease;
-        }
+/* Focused state (optional auto-zoom) */
+.card.focused {
+    width: 340px;
+    height: 480px;
+}
 
-        /* Focused state (optional auto-zoom) */
-        .card.focused {
-            width: 450px;
-            height: 630px;
-        }
+/* Flipped state */
+.card.flipped {
+    transform: rotateY(180deg);
+}
 
-        /* Flipped state */
-        .card.flipped {
-            transform: rotateY(180deg);
-        }
+/* Card faces */
+.card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    border: 2px solid rgba(100, 200, 220, 0.3);
+}
 
-        /* Slide animations */
-        .card.slide-out-left { animation: slideOutLeft 0.4s forwards; }
-        .card.slide-out-right { animation: slideOutRight 0.4s forwards; }
-        .card.slide-out-up { animation: slideOutUp 0.4s forwards; }
-        .card.slide-out-down { animation: slideOutDown 0.4s forwards; }
-        .card.slide-in-left { animation: slideInLeft 0.4s forwards; }
-        .card.slide-in-right { animation: slideInRight 0.4s forwards; }
-        .card.slide-in-up { animation: slideInUp 0.4s forwards; }
-        .card.slide-in-down { animation: slideInDown 0.4s forwards; }
+.card-front {
+    background: rgba(20, 20, 40, 0.8);
+    backdrop-filter: blur(10px);
+}
 
-        @keyframes slideOutLeft { to { transform: translateX(-150vw); opacity: 0; } }
-        @keyframes slideOutRight { to { transform: translateX(150vw); opacity: 0; } }
-        @keyframes slideOutUp { to { transform: translateY(-150vh); opacity: 0; } }
-        @keyframes slideOutDown { to { transform: translateY(150vh); opacity: 0; } }
-        @keyframes slideInLeft { from { transform: translateX(-150vw); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        @keyframes slideInRight { from { transform: translateX(150vw); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        @keyframes slideInUp { from { transform: translateY(-150vh); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        @keyframes slideInDown { from { transform: translateY(150vh); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.card-back {
+    background: rgba(40, 20, 60, 0.8);
+    backdrop-filter: blur(10px);
+    transform: rotateY(180deg);
+}
 
-        /* Card faces */
-        .card-face {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            border-radius: 6px;
-            background: linear-gradient(145deg, #2a2a2e 0%, #1f1f23 100%);
-            box-shadow: 
-                0 3px 10px rgba(0, 0, 0, 0.5),
-                0 10px 30px rgba(0, 0, 0, 0.4),
-                0 30px 70px rgba(0, 0, 0, 0.3),
-                0 60px 120px rgba(0, 0, 0, 0.2),
-                inset 0 1px 0 rgba(255, 255, 255, 0.08),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.3);
-            padding: 32px;
-            overflow: hidden;
-        }
+.card-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    color: rgba(100, 200, 220, 0.8);
+}
 
-        /* Card thickness - left edge */
-        .card-face::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -5px;
-            width: 5px;
-            height: 100%;
-            background: linear-gradient(to right, rgba(5, 5, 8, 0.95) 0%, rgba(15, 15, 18, 0.8) 40%, rgba(25, 25, 28, 0.5) 70%, transparent 100%);
-            box-shadow: inset -1px 0 2px rgba(0, 0, 0, 0.8);
-            border-radius: 2px 0 0 2px;
-        }
+.coord {
+    font-size: 18px;
+    font-weight: 600;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 2px;
+}
 
-        /* Card thickness - right edge */
-        .card-face::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: -5px;
-            width: 5px;
-            height: 100%;
-            background: linear-gradient(to left, rgba(5, 5, 8, 0.95) 0%, rgba(15, 15, 18, 0.8) 40%, rgba(25, 25, 28, 0.5) 70%, transparent 100%);
-            box-shadow: inset 1px 0 2px rgba(0, 0, 0, 0.8);
-            border-radius: 0 2px 2px 0;
-        }
+.label {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, rgba(100, 200, 220, 1) 0%, rgba(100, 200, 220, 0.6) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
 
-        .card-back {
-            transform: rotateY(180deg);
-            background: linear-gradient(145deg, #25252a 0%, #1a1a1e 100%);
-        }
+/* Slide animations */
+@keyframes slide-out-left { to { transform: translateX(-120%); opacity: 0; } }
+@keyframes slide-out-right { to { transform: translateX(120%); opacity: 0; } }
+@keyframes slide-out-up { to { transform: translateY(-120%); opacity: 0; } }
+@keyframes slide-out-down { to { transform: translateY(120%); opacity: 0; } }
 
-        .card-content {
-            position: relative;
-            z-index: 10;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
+@keyframes slide-in-left { from { transform: translateX(120%); opacity: 0; } }
+@keyframes slide-in-right { from { transform: translateX(-120%); opacity: 0; } }
+@keyframes slide-in-up { from { transform: translateY(120%); opacity: 0; } }
+@keyframes slide-in-down { from { transform: translateY(-120%); opacity: 0; } }
 
-        .coord {
-            font-size: 48px;
-            font-weight: 700;
-            color: rgba(255, 255, 255, 0.85);
-            margin-bottom: 12px;
-        }
+.card.slide-out-left { animation: slide-out-left 0.4s ease-out forwards; }
+.card.slide-out-right { animation: slide-out-right 0.4s ease-out forwards; }
+.card.slide-out-up { animation: slide-out-up 0.4s ease-out forwards; }
+.card.slide-out-down { animation: slide-out-down 0.4s ease-out forwards; }
 
-        .label {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            color: rgba(255, 255, 255, 0.4);
-        }
+.card.slide-in-left { animation: slide-in-left 0.4s ease-out forwards; }
+.card.slide-in-right { animation: slide-in-right 0.4s ease-out forwards; }
+.card.slide-in-up { animation: slide-in-up 0.4s ease-out forwards; }
+.card.slide-in-down { animation: slide-in-down 0.4s ease-out forwards; }
 
-        /* ========================================
-           SOCKET SYSTEM
-           Plug-and-play component containers
-           ======================================== */
+/* ========================================
+   SOCKET SYSTEM
+   Draggable plug-in containers
+   ======================================== */
 
-        .socket {
-            position: fixed;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px dashed rgba(255, 255, 255, 0.2);
-            z-index: 1000;
-            cursor: move;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-        }
+.socket {
+    position: fixed;
+    width: 120px;
+    height: 120px;
+    border: 2px dashed rgba(100, 200, 220, 0.5);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: move;
+    background: rgba(20, 20, 40, 0.3);
+    backdrop-filter: blur(5px);
+    user-select: none;
+    transition: border-color 0.3s;
+}
 
-        .socket:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
+.socket:hover {
+    border-color: rgba(100, 200, 220, 0.8);
+    background: rgba(20, 20, 40, 0.5);
+}
 
-        /* Socket positions (draggable, can be repositioned) */
-        #socket-profile { top: 30px; left: 30px; }
-        #socket-settings { top: 30px; right: 30px; }
-        #socket-tools { bottom: 30px; left: 30px; }
-        #socket-flip { bottom: 30px; right: 30px; }
+/* Socket positions */
+#socket-profile {
+    top: 20px;
+    left: 20px;
+}
 
-        /* Socket labels (temporary - removed when component loads) */
-        .socket-label {
-            font-size: 8px;
-            color: rgba(255, 255, 255, 0.3);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            pointer-events: none;
-        }
+#socket-settings {
+    top: 20px;
+    right: 20px;
+}
 
-        /* ========================================
-           INFO PANEL
-           Development helper (remove in production)
-           ======================================== */
+#socket-tools {
+    bottom: 60px;
+    left: 20px;
+}
 
-        #info {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 11px;
-            font-family: monospace;
-            z-index: 999;
-            background: rgba(0, 0, 0, 0.6);
-            padding: 10px 16px;
-            border-radius: 6px;
-            backdrop-filter: blur(10px);
-            pointer-events: none;
-            text-align: center;
-        }
+#socket-flip {
+    bottom: 60px;
+    right: 20px;
+}
 
-        #info div {
-            margin: 3px 0;
-        }
-    
+.socket-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgba(100, 200, 220, 0.6);
+    text-align: center;
+}
+
+/* ========================================
+   INFO PANEL
+   Status display
+   ======================================== */
+
+#info {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(100, 200, 220, 0.6);
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    z-index: 50;
+}
+
+#info div {
+    margin: 4px 0;
+}
+
+#pos,
+#size {
+    color: rgba(100, 200, 220, 1);
+    font-weight: 600;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 768px) {
+    .card {
+        width: 180px;
+        height: 250px;
+    }
+
+    .card.focused {
+        width: 280px;
+        height: 380px;
+    }
+
+    .label {
+        font-size: 20px;
+    }
+
+    .socket {
+        width: 100px;
+        height: 100px;
+    }
+
+    .socket-label {
+        font-size: 10px;
+    }
+
+    #info {
+        font-size: 10px;
+    }
+}
