@@ -19,10 +19,34 @@ An infinite grid of customizable cards. Each card is yours to build on. No middl
 - ⏳ Everything else (TBA)
 
 ## The Idea
+It's a sandbox. You know what to do.
 
-You own your coordinates. You build what you want. It's a sandbox.
+## Iframes/Content Cards
+- Text / flyer / blog / news / job board / classifieds
+- Live chat
+- Forum
+- Live stream
+- Images / Gallery
+- Short + long video
+- Media player
+- For sale listing
+- Indie app embed
+
+## Plug-In-Play
+- Profile (pic, emoji rating, level bar, anon switch)
+- Wallet (linked accounts, crypto,local, token, NFT, business card)
+- Aesthetic (themes, palettes, skins, backgrounds)
+- Catalogue (saved uploads, active uploads)
+- Decks (owned, rented, interested)
+- Encryption
+
+
+
 
 Future features include community tokens, decentralized hosting, and tools for creators. But we're starting simple.
+
+## Pilot Plugins
+
 
 ## Want to contribute?
 
