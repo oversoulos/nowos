@@ -1,4 +1,4 @@
-<div align="center">
+8<div align="center">
 
 # Pick a card.
 
@@ -30,9 +30,12 @@ It's a sandbox. You know what to do.
 - Live stream
 - Images / Gallery
 - Short + long video
-- Media player
+- Media Player
 - For sale listing
 - Indie app embed
+- Photo Booth
+- Dueling Promos
+- nowostotems
 
 ### Plug-In-Play
 - Profile (pic, emoji rating, level bar, anon switch)
@@ -41,6 +44,21 @@ It's a sandbox. You know what to do.
 - Catalogue (saved uploads, active uploads)
 - Decks (owned, rented, interested)
 - Encryption
+
+### Equip Yourself
+- Toolsbars
+- Stackables
+- Wallets
+- Floaters
+- Treys
+- Tuners
+
+### Vaults
+- Self Hosted
+- Local Hosted (TBA)
+- Catalogue
+- Portfolio
+ 
 
 ## Want to contribute?
 
