@@ -236,4 +236,165 @@
     const BLOBS=[];
 
     function initBlobs(){
-        BLOBS.
+        BLOBS.length=0;
+        const H=themeHue();
+        for(let i=0;i<14;i++){
+            BLOBS.push({
+                x:Math.random(), y:0.28+Math.random()*0.72,
+                rx:0.06+Math.random()*0.19, ry:0.032+Math.random()*0.10,
+                spd:(0.11+Math.random()*0.36)*(Math.random()<.5?1:-1),
+                ph:Math.random()*Math.PI*2,
+                a:0.028+Math.random()*0.046,
+                dh:Math.floor(Math.random()*36)-18, H,
+            });
+        }
+    }
+
+    function drawTerrain(ts){
+        const W=terrCvs.width,H=terrCvs.height;
+        tCtx.clearRect(0,0,W,H);
+        for(const b of BLOBS){
+            const ang=ts*0.000030*b.spd+b.ph;
+            const bx=((b.x+Math.cos(ang)*0.04+1)%1)*W;
+            const by=(b.y+Math.sin(ang*0.6)*0.022)*H;
+            const hue=b.H+b.dh, sc=b.ry/b.rx;
+            const g=tCtx.createRadialGradient(bx,by,0,bx,by,b.rx*W);
+            g.addColorStop(0,`hsla(${hue},50%,44%,${b.a})`);
+            g.addColorStop(0.5,`hsla(${hue},36%,28%,${(b.a*0.35).toFixed(3)})`);
+            g.addColorStop(1,'transparent');
+            tCtx.save();
+            tCtx.transform(1,0,0,sc,0,by*(1-sc));
+            tCtx.fillStyle=g;
+            tCtx.beginPath();
+            tCtx.arc(bx,by/sc,b.rx*W,0,Math.PI*2);
+            tCtx.fill();
+            tCtx.restore();
+        }
+    }
+
+    const STARS=[];
+
+    function initStars(){
+        STARS.length=0;
+        for(let i=0;i<280;i++){
+            STARS.push({
+                x:Math.random(), y:Math.random()*0.70,
+                r:0.2+Math.random()*1.0,
+                l:0.3+Math.random()*0.7,
+                tw:0.0008+Math.random()*0.0024,
+                ph:Math.random()*Math.PI*2,
+            });
+        }
+    }
+
+    function drawStars(ts){
+        const W=starCvs.width,H=starCvs.height;
+        sCtx.clearRect(0,0,W,H);
+        for(const s of STARS){
+            const tw=S.pulse?0.30+Math.sin(ts*s.tw+s.ph)*0.70:0.70;
+            const a=s.l*tw;
+            const sx=s.x*W,sy=s.y*H;
+            sCtx.beginPath();
+            sCtx.arc(sx,sy,s.r,0,Math.PI*2);
+            sCtx.fillStyle=`rgba(210,224,255,${a.toFixed(3)})`;
+            sCtx.fill();
+            if(s.l>0.66&&tw>0.60){
+                sCtx.strokeStyle=`rgba(210,224,255,${(a*0.26).toFixed(3)})`;
+                sCtx.lineWidth=0.5;
+                sCtx.beginPath();
+                sCtx.moveTo(sx-s.r*3.5,sy);sCtx.lineTo(sx+s.r*3.5,sy);
+                sCtx.moveTo(sx,sy-s.r*3.5);sCtx.lineTo(sx,sy+s.r*3.5);
+                sCtx.stroke();
+            }
+        }
+    }
+
+    document.addEventListener('keydown',e=>{
+        const map={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]};
+        if(map[e.key]){e.preventDefault();navigate(...map[e.key]);}
+        if(e.key===' '||e.key==='f'||e.key==='F'){e.preventDefault();flip();}
+    });
+
+    let tx=0,ty=0;
+    document.addEventListener('touchstart',e=>{
+        tx=e.changedTouches[0].screenX;
+        ty=e.changedTouches[0].screenY;
+    },{passive:true});
+
+    document.addEventListener('touchend',e=>{
+        const dx=e.changedTouches[0].screenX-tx;
+        const dy=e.changedTouches[0].screenY-ty;
+        if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>50) navigate(dx>0?-1:1,0);
+        else if(Math.abs(dy)>50) navigate(0,dy>0?1:-1);
+    },{passive:true});
+
+    card.addEventListener('click',()=>{
+        if(S.nav) return;
+        if(S.state!=='zoomed'){
+            clearTimeout(S.idleT);
+            setZoom('zoomed');
+        } else {
+            flip();
+        }
+    });
+
+    el('s-flip').addEventListener('click',function(){if(!this.__drag)flip();});
+
+    document.querySelectorAll('.socket').forEach(sock=>{
+        let ox=0,oy=0;
+        const gp=e=>e.touches
+            ?{x:e.touches[0].clientX,y:e.touches[0].clientY}
+            :{x:e.clientX,y:e.clientY};
+        const down=e=>{
+            sock.__drag=false;
+            const p=gp(e),r=sock.getBoundingClientRect();
+            ox=p.x-r.left; oy=p.y-r.top;
+            const move=e2=>{
+                sock.__drag=true;e2.preventDefault();
+                const p2=gp(e2);
+                sock.style.left=`${p2.x-ox}px`;
+                sock.style.top=`${p2.y-oy}px`;
+                sock.style.right='auto';sock.style.bottom='auto';
+            };
+            const up=()=>{
+                window.removeEventListener('mousemove',move);
+                window.removeEventListener('touchmove',move);
+                window.removeEventListener('mouseup',up);
+                window.removeEventListener('touchend',up);
+                setTimeout(()=>{sock.__drag=false;},60);
+            };
+            window.addEventListener('mousemove',move);
+            window.addEventListener('touchmove',move,{passive:false});
+            window.addEventListener('mouseup',up);
+            window.addEventListener('touchend',up);
+        };
+        sock.addEventListener('mousedown',down);
+        sock.addEventListener('touchstart',down,{passive:true});
+    });
+
+    function resize(){
+        const w=window.innerWidth,h=window.innerHeight;
+        terrCvs.width=starCvs.width=w;
+        terrCvs.height=starCvs.height=h;
+        sizeCard();
+    }
+
+    window.addEventListener('resize',()=>{resize();initStars();initBlobs();});
+    resize();
+    initStars();
+    initBlobs();
+    setZoom('zoomed');
+    startIdle();
+
+    function loop(ts){
+        updateLight(ts);
+        drawTerrain(ts);
+        drawStars(ts);
+        requestAnimationFrame(loop);
+    }
+
+    requestAnimationFrame(loop);
+
+    </script>
+</body>
+</html>
