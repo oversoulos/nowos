@@ -392,7 +392,7 @@
         requestAnimationFrame(loop);
     }
     requestAnimationFrame(loop);
-
+}
     /* ================================================
        SKIN API (call from settings plugin):
 
