@@ -144,6 +144,20 @@
             letter-spacing: 1px;
         }
 
+/* ========== HUD ========== */
+        #hud {
+            position: fixed;
+            bottom: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 999;
+            color: rgba(255, 255, 255, 0.14);
+            font-size: 9px;
+            letter-spacing: 1.4px;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
         /* ========== SLIDE ANIMATIONS ========== */
         .card.out-l { animation: slideOutLeft 0.42s cubic-bezier(0.55,0,1,0.8) forwards; }
         .card.out-r { animation: slideOutRight 0.42s cubic-bezier(0.55,0,1,0.8) forwards; }
@@ -164,19 +178,7 @@
         @keyframes slideInDown { from { transform: translateY(200vh) scale(1.12); opacity: 0; } to { transform: none; opacity: 1; } }
 
         
-        /* ========== HUD ========== */
-        #hud {
-            position: fixed;
-            bottom: 14px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 999;
-            color: rgba(255, 255, 255, 0.14);
-            font-size: 9px;
-            letter-spacing: 1.4px;
-            pointer-events: none;
-            white-space: nowrap;
-        }
+        
 
         #hud b { color: #5abeff; font-weight: 400; }
 
