@@ -85,7 +85,7 @@ body {
 }
 
 #zoom-wrap.traveling {
-    transform: scale(0.75);
+    transform: scale(0.65);
 }
 
 .card {
@@ -103,7 +103,7 @@ body {
 
 .card-face {
     position: absolute;
-    inset: 4px;
+    inset: 24px;
     backface-visibility: hidden;
     border-radius: 24px;
     overflow: hidden;
