@@ -25,7 +25,7 @@ function startIdle() {
     clearTimeout(S.idleT);
     S.idleT = setTimeout(() => {
         if (!S.nav && !card.classList.contains('flipped')) setZoom('zoomed');
-    }, 3000);
+    }, 300000);
 }
 
 function hex4(x, y) {
