@@ -25,7 +25,7 @@ function startIdle() {
     clearTimeout(S.idleT);
     S.idleT = setTimeout(() => {
         if (!S.nav && !card.classList.contains('flipped')) setZoom('zoomed');
-    }, 30000);
+    }, 3000);
 }
 
 function hex4(x, y) {
@@ -40,10 +40,23 @@ function updateDisplay() {
 }
 
 function updateBackground() {
-    const bx = S.x * 12;
-    const by = S.y * 12;
-    bgPlanet.style.transform = `translate(${-bx}px, ${-by}px) scale(1)`;
-    bgHaze.style.transform = `translate(${-bx * 0.6}px, ${-by * 0.6}px)`;
+    // Parallax speeds – farther layers move slower
+    const cardX = S.x * 12;   // Card moves the most
+    const cardY = S.y * 12;
+    
+    const planetX = cardX * 0.4;   // Planet moves slow (far away)
+    const planetY = cardY * 0.4;
+    
+    const hazeX = cardX * 0.6;     // Haze moves medium
+    const hazeY = cardY * 0.6;
+    
+    // Apply transforms to each layer
+    bgPlanet.style.transform = `translate(${-planetX}px, ${-planetY}px) scale(1.05)`;
+    bgHaze.style.transform = `translate(${-hazeX}px, ${-hazeY}px)`;
+    
+    // Optional: subtle rotation for depth
+    const rotation = (S.x + S.y) * 0.5;
+    bgPlanet.style.transform += ` rotate(${rotation}deg)`;
 }
 
 function navigate(dx, dy) {
