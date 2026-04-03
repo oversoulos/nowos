@@ -29,10 +29,10 @@ body {
     height: 160%;
     z-index: 1;
     background: radial-gradient(ellipse 145% 50% at 50% 116%,
-                #0e1530 0%,
-                #090d24 28%,
+                #0e1530 40%,
+                #090d24 18%,
                 #06071a 60%,
-                #03030a 100%);
+                #03030a 70%);
     pointer-events: none;
     transition: transform 1.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -58,6 +58,17 @@ body {
     background: radial-gradient(ellipse at 50% 30%,
                 rgba(90, 190, 255, 0.05) 0%,
                 transparent 70%);
+    pointer-events: none;
+}
+#stars {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background-image: radial-gradient(2px 2px at 20px 30px, #fff, rgba(0,0,0,0)),
+                      radial-gradient(1px 1px at 60px 80px, #fff, rgba(0,0,0,0));
+    background-size: 200px 200px, 150px 150px;
+    background-repeat: repeat;
+    opacity: 0.3;
     pointer-events: none;
 }
 
@@ -92,7 +103,7 @@ body {
 
 .card-face {
     position: absolute;
-    inset: 0;
+    inset: 4px;
     backface-visibility: hidden;
     border-radius: 24px;
     overflow: hidden;
