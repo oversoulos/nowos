@@ -1,5 +1,5 @@
 // nowos 
-       const S = {
+     *  const S = {
             x: 0, y: 0,
             nav: false,
             state: 'zoomed',
