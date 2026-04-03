@@ -25,7 +25,7 @@ function startIdle() {
     clearTimeout(S.idleT);
     S.idleT = setTimeout(() => {
         if (!S.nav && !card.classList.contains('flipped')) setZoom('zoomed');
-    }, 2000);
+    }, 2500);
 }
 
 function hex4(x, y) {
@@ -43,7 +43,14 @@ function updateBackground() {
     // Parallax speeds – farther layers move slower
     const cardX = S.x * 12;   // Card moves the most
     const cardY = S.y * 12;
-    
+
+    const stars = document.getElementById('stars');
+if (stars) {
+    const starsX = cardX * 0.1;  // Stars move VERY slow (deep space)
+    const starsY = cardY * 0.1;
+    stars.style.transform = `translate(${-starsX}px, ${-starsY}px)`;
+}
+
     const planetX = cardX * 0.4;   // Planet moves slow (far away)
     const planetY = cardY * 0.4;
     
