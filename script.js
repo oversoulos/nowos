@@ -1,5 +1,10 @@
 // nowos 
-       
+       const S = {
+            x: 0, y: 0,
+            nav: false,
+            state: 'zoomed',
+            idleT: null
+        };
 
         const card = document.getElementById('card');
         const zoomWrap = document.getElementById('zoom-wrap');
