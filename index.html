@@ -36,10 +36,10 @@
             height: 160%;
             z-index: 1;
             background: radial-gradient(ellipse 145% 50% at 50% 116%,
-                #0e1530 0%,
-                #090d24 28%,
-                #06071a 60%,
-                #03030a 100%);
+    #0e1530 0%,  /* top color */
+    #090d24 28%,
+    #06071a 60%,
+    #03030a 100%);
             pointer-events: none;
             transition: transform 1.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -103,7 +103,7 @@
             overflow: hidden;
             padding: 28px;
             background: #101622;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5),
+            box-shadow: 0 0 0 1.5px rgba(100, 200, 255, 0.55), 
                         0 0 0 1.5px rgba(100, 200, 255, 0.55),
                         0 0 18px 4px rgba(100, 200, 255, 0.3),
                         inset 0 1px 0 rgba(255, 255, 255, 0.08);
@@ -139,6 +139,7 @@
             font-size: 9px;
             letter-spacing: 4px;
             text-transform: uppercase;
+            text-shadow: 0 0 20px #5abeff,
             color: rgba(255, 255, 255, 0.38);
         }
 
