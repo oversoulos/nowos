@@ -133,6 +133,8 @@
             }
         });
 
-
+// Initialize
+updateDisplay();
+startIdle();
 
                                         
