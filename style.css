@@ -29,10 +29,10 @@
             height: 160%;
             z-index: 1;
             background: radial-gradient(ellipse 145% 50% at 50% 116%,
-                        #0e1530 0%,  
-                        #090d24 28%,
-                        #06071a 60%,
-                        #03030a 100%);
+                #ff6b6b 0%,    /* bright red-pink */
+                #4ecdc4 28%,   /* bright teal */
+                #45b7d1 60%,   /* bright blue */
+                #96ceb4 100%); /* light green */
             pointer-events: none;
             transition: transform 1.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
