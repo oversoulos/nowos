@@ -171,37 +171,48 @@
         @keyframes slideInDown { from { transform: translateY(200vh) scale(1.12); opacity: 0; } to { transform: none; opacity: 1; } }
 
         /* ========== SOCKETS ========== */
-        .socket {
-            position: fixed;
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1.5px dashed rgba(255, 255, 255, 0.12);
-            z-index: 1000;
-            cursor: grab;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 2px;
-            backdrop-filter: blur(8px);
-            transition: all 0.2s;
-        }
+        #toolbar {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    background: rgba(10, 10, 20, 0.7);
+    backdrop-filter: blur(20px);
+    padding: 8px 16px;
+    border-radius: 60px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 1000;
+}
 
-        .socket:hover {
-            background: rgba(255, 255, 255, 0.07);
-            border-color: #5abeff;
-            transform: scale(1.1);
-        }
+.tool {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 12px;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
 
-        .socket-icon { font-size: 16px; color: rgba(255, 255, 255, 0.38); }
-        .socket-lbl { font-size: 6px; color: rgba(255, 255, 255, 0.14); letter-spacing: 1px; }
+.tool:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.05);
+}
 
-        #s-profile { top: 22px; left: 22px; }
-        #s-settings { top: 22px; right: 22px; }
-        #s-tools { bottom: 22px; left: 22px; }
-        #s-flip { bottom: 22px; right: 22px; }
+.tool-icon {
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.tool-lbl {
+    font-size: 8px;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+}
 
         /* ========== HUD ========== */
         #hud {
@@ -239,18 +250,31 @@
                 <div class="card-face card-back">
                     <div class="card-content">
                         <div class="card-coord" style="font-size:15px;letter-spacing:2px;">⚙</div>
-                        <div class="card-label">FLIP TO FRONT</div>
+                        <div class="card-label">FLIP</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="socket" id="s-profile"><div class="socket-icon">◉</div><div class="socket-lbl">Profile</div></div>
-    <div class="socket" id="s-settings"><div class="socket-icon">⚙</div><div class="socket-lbl">Settings</div></div>
-    <div class="socket" id="s-tools"><div class="socket-icon">⬡</div><div class="socket-lbl">Tools</div></div>
-    <div class="socket" id="s-flip"><div class="socket-icon">↺</div><div class="socket-lbl">Flip</div></div>
-
+    <div id="toolbar">
+    <div class="tool" id="tool-profile">
+        <div class="tool-icon">◉</div>
+        <div class="tool-lbl">Profile</div>
+    </div>
+    <div class="tool" id="tool-settings">
+        <div class="tool-icon">⚙</div>
+        <div class="tool-lbl">Settings</div>
+    </div>
+    <div class="tool" id="tool-wallet">
+        <div class="tool-icon">💰</div>
+        <div class="tool-lbl">Wallet</div>
+    </div>
+    <div class="tool" id="tool-anon">
+        <div class="tool-icon">💡</div>
+        <div class="tool-lbl">Anonymous</div>
+    </div>
+</div>   
     <div id="hud">POS <b id="hud-pos">0, 0</b></div>
 
     <script>
@@ -390,16 +414,21 @@
         });
 
         // Socket buttons
-        document.getElementById('s-flip').addEventListener('click', flip);
-        document.getElementById('s-settings').addEventListener('click', () => {
-            alert('Settings panel — coming soon');
-        });
-        document.getElementById('s-profile').addEventListener('click', () => {
-            alert('Profile panel — coming soon');
-        });
-        document.getElementById('s-tools').addEventListener('click', () => {
-            alert('Tools panel — coming soon');
-        });
+        document.getElementById('tool-profile').addEventListener('click', () => {
+    alert('Profile panel – your business card, stars, level bar');
+});
+
+document.getElementById('tool-settings').addEventListener('click', () => {
+    alert('Settings panel – themes, card styles, app preferences');
+});
+
+document.getElementById('tool-wallet').addEventListener('click', () => {
+    alert('Wallet panel – crypto or Stripe, your choice');
+});
+
+document.getElementById('tool-anon').addEventListener('click', () => {
+    alert('Anonymous mode – toggle on/off');
+});
 
         // Initialize
         updateDisplay();
