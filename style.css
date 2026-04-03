@@ -1,5 +1,4 @@
-
-        * {
+* {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -21,7 +20,7 @@
             justify-content: center;
         }
 
-        /* ===BACKGROUND LAYERs=== */
+        /* ========== BACKGROUND LAYERS ========== */
         #bg-planet {
             position: fixed;
             top: -30%;
@@ -163,3 +162,23 @@
         @keyframes slideInRight { from { transform: translateX(200vw); opacity: 0; } to { transform: none; opacity: 1; } }
         @keyframes slideInUp { from { transform: translateY(-200vh) scale(0.7); opacity: 0; } to { transform: none; opacity: 1; } }
         @keyframes slideInDown { from { transform: translateY(200vh) scale(1.12); opacity: 0; } to { transform: none; opacity: 1; } }
+
+        
+        /* ========== HUD ========== */
+        #hud {
+            position: fixed;
+            bottom: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 999;
+            color: rgba(255, 255, 255, 0.14);
+            font-size: 9px;
+            letter-spacing: 1.4px;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        #hud b { color: #5abeff; font-weight: 400; }
+
+
+               
