@@ -191,6 +191,32 @@ body { display: flex; align-items: center; justify-content: center; }
     font-size: 8px; color: rgba(0,255,160,0.30); letter-spacing: 1px;
     text-shadow: 0 0 6px rgba(0,255,160,0.3);
 }
+#fullscreen-btn {
+    position: fixed;
+    bottom: 40px;
+    right: 18px;
+    z-index: 999;
+    background: rgba(0, 255, 160, 0.08);
+    border: 1px solid rgba(0, 255, 160, 0.25);
+    color: rgba(0, 255, 160, 0.5);
+    font-size: 18px;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    cursor: pointer;
+    backdrop-filter: blur(6px);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+#fullscreen-btn:hover {
+    background: rgba(0, 255, 160, 0.15);
+    color: rgba(0, 255, 160, 0.9);
+}
+
 
 /* ========== HUD ========== */
 #hud {
