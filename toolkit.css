@@ -471,9 +471,9 @@
 }
 
 #fs-card-btn {
-    position: fixed;
-    top: 14px;
-    right: 14px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
     z-index: 998;
     background: rgba(0,255,160,0.06);
     border: 1px solid rgba(0,255,160,0.2);
