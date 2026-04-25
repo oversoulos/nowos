@@ -6,20 +6,7 @@ const S = {
     state: 'zoomed',
     idleT: null
 };
-// Fullscreen toggle
-const fsBtn = document.getElementById('fullscreen-btn');
-fsBtn.addEventListener('click', () => {
-    if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen();
-        fsBtn.textContent = '✕';
-    } else {
-        document.exitFullscreen();
-        fsBtn.textContent = '⛶';
-    }
-});
-document.addEventListener('fullscreenchange', () => {
-    if (!document.fullscreenElement) fsBtn.textContent = '⛶';
-});
+
 const card = document.getElementById('card');
 const zoomWrap = document.getElementById('zoom-wrap');
 const coord = document.getElementById('coord');
@@ -170,4 +157,18 @@ card.addEventListener('click', () => {
 // Initialize
 updateDisplay();
 startIdle();
-            
+
+// Fullscreen toggle
+const fsBtn = document.getElementById('fullscreen-btn');
+fsBtn.addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+        fsBtn.textContent = '✕';
+    } else {
+        document.exitFullscreen();
+        fsBtn.textContent = '⛶';
+    }
+});
+document.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement) fsBtn.textContent = '⛶';
+});
