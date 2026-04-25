@@ -153,11 +153,6 @@ card.addEventListener('click', () => {
         flip();
     }
 });
-
-// Initialize
-updateDisplay();
-startIdle();
-
 // Fullscreen toggle
 const fsBtn = document.getElementById('fullscreen-btn');
 fsBtn.addEventListener('click', () => {
@@ -172,3 +167,9 @@ fsBtn.addEventListener('click', () => {
 document.addEventListener('fullscreenchange', () => {
     if (!document.fullscreenElement) fsBtn.textContent = '⛶';
 });
+
+
+// Initialize
+updateDisplay();
+startIdle();
+
