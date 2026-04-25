@@ -296,19 +296,20 @@
     inp.value = '';
   }
 
-  // ── Card fullscreen button ────────────────────────────────
-  const fsBtnCard = document.createElement('button');
-  fsBtnCard.id = 'fs-card-btn';
-  fsBtnCard.title = 'Card fullscreen';
-  fsBtnCard.textContent = '⤢';
-  document.body.appendChild(fsBtnCard);
+ let cardFS = false;
 
-  let cardFS = false;
-  fsBtnCard.addEventListener('click', () => {
-    cardFS = !cardFS;
-    cardContainer.classList.toggle('card-fullscreen', cardFS);
-    fsBtnCard.textContent = cardFS ? '⤡' : '⤢';
-  });
+['card-front', 'card-back'].forEach(face => {
+    const btn = document.createElement('button');
+    btn.className = 'fs-card-btn';
+    btn.title = 'Card fullscreen';
+    btn.textContent = '⤢';
+    document.querySelector('.' + face).appendChild(btn);
+    btn.addEventListener('click', () => {
+        cardFS = !cardFS;
+        cardContainer.classList.toggle('card-fullscreen', cardFS);
+        document.querySelectorAll('.fs-card-btn').forEach(b => b.textContent = cardFS ? '⤡' : '⤢');
+    });
+}); 
 
   // ── Drag helper (unconstrained) ───────────────────────────
   function makeDraggable(el, handle) {
