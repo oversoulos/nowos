@@ -70,31 +70,9 @@ body { display: flex; align-items: center; justify-content: center; }
     perspective: 6400px;
 }
 
-#fullscreen-btn {
-    position: fixed;
-    bottom: 40px;
-    right: 18px;
-    z-index: 99;
-    background: rgba(0, 255, 160, 0.08);
-    border: 1px solid rgba(0, 255, 160, 0.25);
-    color: rgba(0, 255, 160, 0.5);
-    font-size: 18px;
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
-    cursor: pointer;
-    backdrop-filter: blur(6px);
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-}
 
-#fullscreen-btn:hover {
-    background: rgba(0, 255, 160, 0.15);
-    color: rgba(0, 255, 160, 0.9);
-}
+
+
 
 #zoom-wrap {
     transform: scale(0.95);
